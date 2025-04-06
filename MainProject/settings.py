@@ -25,6 +25,28 @@ SECRET_KEY = 'django-insecure-^5#++w9u@t94a-ex&rf(bm$%t$k_(^kj@6+w-ou!4t!%i*0q!$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Или 'django.contrib.sessions.backends.cached_db'
+SESSION_COOKIE_SECURE = False  # True для HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_SAVE_EVERY_REQUEST = True  # Важно!
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        }
+    }
+}
+
 ALLOWED_HOSTS = []
 
 
@@ -43,7 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Должно быть перед AuthenticationMiddleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -1,4 +1,3 @@
-# urls.py (без изменений)
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
@@ -16,4 +15,8 @@ urlpatterns = [
     path('add_basket/', add_basket, name='add_basket'),
     path('update_quantity/', update_quantity, name='update_quantity'),
     path('remove_from_basket/<int:item_id>/', remove_from_basket, name='remove_from_basket'),
+    path('order_success/<int:order_id>/', order_success, name='order_success'),  # Изменено на подчеркивание
+    path('process_delivery/', process_delivery, name='process_delivery'),  # Изменено на подчеркивание
+    path('complete_order/', complete_order, name='complete_order'),  # Изменено на подчеркивание
+    path('delivery/', delivery_view, name='delivery'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

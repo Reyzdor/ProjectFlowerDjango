@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 
 class Category(models.Model):
     title = models.CharField(
@@ -62,53 +64,23 @@ class Flowers(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='пользователь',
-    )
-    order_date = models.DateTimeField(
-        verbose_name='дата',
-        auto_now_add=True,
-    )
-    status_choices = [
-        ('processing', 'в обработке'),
-        ('shipped', 'отправлен'),
-        ('delivered', 'доставлен'),
-        ('canceled', 'отменен'),
-    ]
-    status_order = models.CharField(
-        max_length=20,
-        choices=status_choices,
-        default='processing',
-        verbose_name='статус заказа',
-    )
-    total_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='общая сумма',
-    )
-
-    def add_flower(order, flower, quantity):
-        order_time = OrderTime(
-            order=order,
-            flower=flower,
-            quantity=quantity,
-            unit_price = flower.price
-        )
-
-        order_time.save()
-        order.add_flower()
-
-
-    def __str__(self):
-        return f"Заказ {self.id} от {self.user}"
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    address = models.CharField(max_length=255)
+    customer_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    delivery_time = models.CharField(max_length=50)
+    status_order = models.CharField(max_length=20, default='processing')
+    comment = models.TextField(blank=True, null=True, verbose_name='Комментарий к заказу')
 
     class Meta:
-        verbose_name = 'заказ'
-        verbose_name_plural = 'заказы'
-
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+    
+    def __str__(self):
+        return f"Заказ #{self.id} - {self.customer_name}"
 
 class OrderTime(models.Model):
     order = models.ForeignKey(
@@ -131,6 +103,9 @@ class OrderTime(models.Model):
         max_digits=10,
         decimal_places=2,
     )
+
+    def get_total(self):
+        return self.unit_price * self.quantity
 
     def __str__(self):
         return f"{self.flower.title} - {self.quantity} шт."
@@ -168,3 +143,6 @@ class Basket(models.Model):
                 name='unique_user_product'
             ),
         ]
+
+
+    
