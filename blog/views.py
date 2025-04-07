@@ -169,18 +169,15 @@ def remove_from_basket(request, item_id):
 @login_required
 def delivery_view(request):
     if request.method == 'POST':
-        # Получаем данные из формы корзины
         address = request.POST.get('address', 'ул. Александра Пушкина, 42')
         latitude = request.POST.get('latitude', '')
         longitude = request.POST.get('longitude', '')
         
-        # Собираем товары из корзины
         basket_items = []
         for key, value in request.POST.items():
             if key.startswith('product_'):
                 product_id = key.replace('product_', '')
-                # Здесь вам нужно получить продукт из базы данных
-                # и добавить в basket_items
+                
                 
         context = {
             'address': address,
@@ -191,8 +188,7 @@ def delivery_view(request):
         }
         return render(request, 'blog/delivery.html', context)
     else:
-        # Если зашли напрямую без выбора адреса
-        return redirect('basket')  # Перенаправляем обратно в корзин
+        return redirect('basket')  
     
 @login_required
 def order_success(request, order_id):
@@ -215,7 +211,6 @@ def process_delivery(request):
             return redirect('basket')
         
         try:
-            # Проверка обязательных полей
             required_fields = {
                 'fullname': 'ФИО',
                 'email': 'Email',
@@ -233,7 +228,6 @@ def process_delivery(request):
                 messages.error(request, '\n'.join(errors))
                 return redirect('delivery')
 
-            # Сохранение данных в сессии
             request.session['delivery_data'] = {
                 'address': request.POST['address'],
                 'latitude': request.POST.get('latitude', ''),
@@ -245,13 +239,11 @@ def process_delivery(request):
                 'comment': request.POST.get('comment', '')
             }
             
-            # Принудительное сохранение сессии
             request.session.modified = True
             request.session.save()
             
             print("Данные сессии установлены:", request.session['delivery_data'])
             
-            # Проверка корзины
             basket_items = Basket.objects.filter(user=request.user)
             if not basket_items.exists():
                 messages.error(request, 'Ваша корзина пуста')
@@ -273,7 +265,6 @@ def complete_order(request):
     print(f"Session ID: {request.session.session_key}")
     print("All session data:", dict(request.session))
     
-    # Проверка данных доставки в сессии
     if 'delivery_data' not in request.session:
         error_msg = "ОШИБКА: Нет данных доставки в сессии!"
         print(error_msg)
@@ -284,7 +275,6 @@ def complete_order(request):
         delivery_data = request.session['delivery_data']
         print("\nDelivery data from session:", delivery_data)
         
-        # Получаем товары из корзины
         basket_items = Basket.objects.filter(user=request.user).select_related('product')
         if not basket_items.exists():
             error_msg = "ОШИБКА: Корзина пуста!"
@@ -296,7 +286,6 @@ def complete_order(request):
         for item in basket_items:
             print(f"- {item.product.title} x {item.quantity}")
 
-        # Проверка остатков товаров
         out_of_stock = []
         for item in basket_items:
             if item.quantity > item.product.stock:
@@ -315,7 +304,6 @@ def complete_order(request):
                     f'Недостаточно товара "{item["product"]}" на складе (доступно: {item["available"]})')
             return redirect('basket')
 
-        # Создание заказа
         total_amount = sum(item.product.price * item.quantity for item in basket_items)
         print(f"\nCreating order with total amount: {total_amount}")
         
@@ -332,7 +320,6 @@ def complete_order(request):
         )
         print(f"Order created - ID: {order.id}")
 
-        # Создание позиций заказа и обновление остатков
         print("\nCreating order items:")
         for item in basket_items:
             OrderTime.objects.create(
@@ -345,11 +332,9 @@ def complete_order(request):
             item.product.save()
             print(f"- Added {item.product.title} x {item.quantity}")
 
-        # Очистка корзины
         basket_items.delete()
         print("Basket cleared")
 
-        # Очистка сессии
         del request.session['delivery_data']
         request.session.modified = True
         print("Delivery data removed from session")

@@ -134,7 +134,6 @@
     </style>
 </head>
 <body>
-    <!-- Хедер с логотипом -->
     <header class="px-3" style="background-color: var(--bg-color);">
         <div class="container text-center">
             <h1 class="m-0 site-title">CUSTOM BLOOMS</h1>
@@ -142,7 +141,6 @@
         </div>
     </header>
 
-    <!-- Навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-light mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="color: var(--main-color) !important;">
@@ -162,7 +160,6 @@
                     {% endfor %}
                 </ul>
                 
-                <!-- Блок пользователя -->
                 <div class="ms-auto d-flex align-items-center">
                     {% if user.is_authenticated %}
                         <span class="navbar-text me-3">Привет, {{ user.username }}!</span>
@@ -175,7 +172,6 @@
         </div>
     </nav>
 
-    <!-- Основной контент -->
     <main class="container my-5">
         <div class="row">
             <div class="col-lg-6 mb-4">
@@ -247,12 +243,10 @@
         </div>
     </main>
 
-    <!-- Футер -->
     <footer class="text-white text-center p-4 mt-5" style="background: linear-gradient(45deg, #FF6EC7, #FF9FDF); box-shadow: 0 -2px 10px rgba(255, 159, 223, 0.3);">
         <p class="m-0">&copy; CUSTOM BLOOMS</p>
     </footer>
 
-    <!-- Модальное окно авторизации -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -280,15 +274,12 @@
                 addToCartForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    // Проверяем, авторизован ли пользователь
                     {% if not user.is_authenticated %}
-                        // Показываем модальное окно, если пользователь не авторизован
                         const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                         loginModal.show();
                         return;
                     {% endif %}
                     
-                    // Если пользователь авторизован, отправляем форму
                     fetch(this.action, {
                         method: 'POST',
                         headers: {
@@ -299,7 +290,6 @@
                     })
                     .then(response => {
                         if (response.ok) {
-                            // Перенаправляем на страницу корзины после успешного добавления
                             window.location.href = "{% url 'basket' %}";
                         } else {
                             console.error('Ошибка при добавлении в корзину');
