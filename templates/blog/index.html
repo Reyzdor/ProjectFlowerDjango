@@ -255,7 +255,9 @@
 <body>
     <header class="px-3" style="background-color: var(--bg-color);">
         <div class="container text-center position-relative">
-            <h1 class="m-0 site-title">CUSTOM BLOOMS</h1>
+            <a href="{% url 'index' %}" class="text-decoration-none">
+                <h1 class="m-0 site-title">CUSTOM BLOOMS</h1>
+            </a>
             <div class="header-line"></div>
         </div>
     </header>
@@ -340,6 +342,7 @@
     <footer class="text-white text-center p-3 mt-5">
         <p class="m-0">&copy; CUSTOM BLOOMS</p>
     </footer>
+    
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">

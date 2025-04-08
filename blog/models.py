@@ -34,7 +34,8 @@ class Flowers(models.Model):
         max_digits=10,
         decimal_places=2,
     )
-    stock = models.PositiveIntegerField(
+    stock = models.IntegerField(
+        default=0,
         verbose_name='количество в наличии',
     )
     category = models.ForeignKey(

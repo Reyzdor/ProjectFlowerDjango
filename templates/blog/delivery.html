@@ -1,7 +1,11 @@
 {% extends 'blog/index.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container" style="
+
+
+
+    <div class="container" style="
     padding-bottom: 180px;
     padding-top: 25px;
     max-width: 1200px;
@@ -9,74 +13,75 @@
     position: relative;
     padding: 10px 15px;
     margin: 0 auto;
-">
-    <!-- Заголовок и кнопка - теперь строго сверху -->
-    <div style="
-        text-align: center;
-        margin-bottom: 40px;
-        padding: 0 15px;
     ">
-        <h1 style="
-            color: #5a2d50;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            font-weight: 500;
-            font-size: 35px;
-            margin-right: 640px;
-            margin-bottom: 10px;
-            max-width: 1200px;
-            margin-top: -40px;
-        ">Подтверждение заказа</h1>
-        
-        <a href="{% url 'basket' %}" style="
-            display: inline-block;
-            background: transparent;
-            color: #6c757d;
-            border: 1px solid #6c757d;
-            border-radius: 5px;
-            padding: 8px 16px;
-            margin-right: 820px;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            margin-top: 10px;
-        ">← Вернуться в корзину</a>
-    </div>
+<!-- Заголовок и кнопка - теперь строго сверху -->
+    <div style="
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 15px;
+    ">
 
-    <!-- Основной контент (две колонки) -->
-    <div style="
-        display: flex;
-        gap: 30px;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding: 0 15px;
-        
-    ">
-        <!-- Левая колонка (форма заказа) -->
-        <div style="
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-        ">
-            <form method="post" action="{% url 'process_delivery' %}">
-                {% csrf_token %}
-                <input type="hidden" name="address" value="{{ address|default:'' }}">
-                <input type="hidden" name="latitude" value="{{ latitude|default:'' }}">
-                <input type="hidden" name="longitude" value="{{ longitude|default:'' }}">
-                
-                {% for item in basket_items %}
-                <input type="hidden" name="product_{{ item.product.id }}" value="{{ item.quantity }}">
-                {% endfor %}
-                
-                <h2 style="
-                    font-size: 20px;
-                    font-weight: 600;
-                    margin-bottom: 20px;
-                    color: #1a1a1a;
-                ">Контактные данные</h2>
+    <h1 style="
+color: #5a2d50;
+font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+font-weight: 500;
+font-size: 35px;
+margin-right: 640px;
+margin-bottom: 10px;
+max-width: 1200px;
+margin-top: -40px;
+">Подтверждение заказа</h1>
+
+<a href="{% url 'basket' %}" style="
+display: inline-block;
+background: transparent;
+color: #6c757d;
+border: 1px solid #6c757d;
+border-radius: 5px;
+padding: 8px 16px;
+margin-right: 820px;
+text-decoration: none;
+font-size: 15px;
+transition: all 0.3s;
+margin-top: 10px;
+">← Вернуться в корзину</a>
+</div>
+
+<!-- Основной контент (две колонки) -->
+<div style="
+display: flex;
+gap: 30px;
+width: 100%;
+justify-content: center;
+flex-wrap: wrap;
+padding: 0 15px;
+
+">
+<!-- Левая колонка (форма заказа) -->
+<div style="
+background: white;
+border-radius: 10px;
+padding: 25px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 500px;
+">
+<form method="post" action="{% url 'process_delivery' %}">
+    {% csrf_token %}
+    <input type="hidden" name="address" value="{{ address|default:'' }}">
+    <input type="hidden" name="latitude" value="{{ latitude|default:'' }}">
+    <input type="hidden" name="longitude" value="{{ longitude|default:'' }}">
+    
+    {% for item in basket_items %}
+    <input type="hidden" name="product_{{ item.product.id }}" value="{{ item.quantity }}">
+    {% endfor %}
+    
+    <h2 style="
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+    ">Контактные данные</h2>
                 
                 <div style="margin-bottom: 18px;">
                     <label for="fullname" style="
