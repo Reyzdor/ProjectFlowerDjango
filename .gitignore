@@ -1,0 +1,14 @@
+venv/
+.env/
+.venv/
+/venv
+./venv/
+.venv/
+venv
+*.pyc
+__pycache__/
+.DS_Store
+staticfiles
+/staticfiles/ 
+static/bootstrap-5.3.3-dist
+/static/bootstrap-5.3.3-dist/

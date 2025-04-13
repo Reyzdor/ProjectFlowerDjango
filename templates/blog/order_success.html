@@ -1,0 +1,125 @@
+{% extends 'blog/index.html' %}
+{%  load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
+<div class="container mt-4 mb-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-pink text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i>Заказ подтверждён</h2>
+                <span class="badge bg-light text-dark fs-6">#{{ order.id }}</span>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="alert alert-success">
+                <i class="fas fa-info-circle me-2"></i>Спасибо за заказ! Менеджер свяжется с вами в течение 15 минут.
+            </div>
+
+            <div class="row">
+                <!-- Контактные данные -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <link rel="stylesheet" href="{% static 'blog/css/order_success.css' %}">
+                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Контактные данные</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong><i class="fas fa-user me-2"></i>Имя:</strong> {{ order.customer_name }}</li>
+                                <li class="mb-2"><strong><i class="fas fa-phone me-2"></i>Телефон:</strong> {{ order.phone }}</li>
+                                <li class="mb-2"><strong><i class="fas fa-envelope me-2"></i>Email:</strong> {{ order.email }}</li>
+                                <li class="mb-2"><strong><i class="fas fa-map-marker-alt me-2"></i>Адрес:</strong> {{ order.address }}</li>
+                                <li><strong><i class="fas fa-clock me-2"></i>Время доставки:</strong> {{ order.delivery_time }}</li>
+                            </ul>
+                            
+                            {% if order.comment %}
+                            <div class="mt-3 p-3 bg-light rounded">
+                                <h6><i class="fas fa-comment me-2"></i>Ваш комментарий:</h6>
+                                <p class="mb-0">{{ order.comment }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Состав заказа -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>Состав заказа</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Товар</th>
+                                            <th class="text-center">Кол-во</th>
+                                            <th class="text-end">Цена</th>
+                                            <th class="text-end">Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in order.ordertime_set.all %}
+                                        <tr>
+                                            <td>{{ item.flower.title }}</td>
+                                            <td class="text-center">{{ item.quantity }}</td>
+                                            <td class="text-end">{{ item.unit_price }} ₽</td>
+                                            <td class="text-end">{{ item.get_total|default:item.unit_price }} ₽</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot class="table-group-divider">
+                                        <tr>
+                                            <th colspan="3" class="text-end">Итого:</th>
+                                            <th class="text-end">{{ order.total_amount }} ₽</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div><img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up"></div>
+
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-2"></i>На главную
+                </a>
+                <button class="btn btn-pink" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Распечатать
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-pink {
+        background-color: #ff69b4 !important;
+    }
+    .btn-pink {
+        background-color: #ff69b4;
+        color: white;
+    }
+    .btn-pink:hover {
+        background-color: #ff1493;
+        color: white;
+    }
+    .card {
+        border-radius: 15px;
+    }
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+    .table th {
+        font-weight: 600;
+    }
+</style>
+<script src="{% static 'blog/js/order_success.js' %}"></script>
+{% endblock %}
