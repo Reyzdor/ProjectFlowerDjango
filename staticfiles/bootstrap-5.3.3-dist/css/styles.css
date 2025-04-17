@@ -1,0 +1,24 @@
+/* styles.css */
+
+/* Пример кастомного цвета, вдохновленного коктейлем */
+.bg-mojito {
+    background-color: #4CAF50; /* Зелёный цвет мохито */
+    color: white;  /* Цвет текста на фоне */
+}
+
+.bg-margarita {
+    background-color: #CDDC39; /* Лаймовый цвет маргариты */
+    color: black; /* Цвет текста на фоне */
+}
+
+.bg-pina-colada {
+    background-color: #FFEB3B; /* Светло-желтый цвет пина колады */
+    color: black; /* Цвет текста на фоне */
+}
+
+.bg-cosmopolitan {
+    background-color: #E91E63; /* Розовый цвет космополитена */
+    color: white; /* Цвет текста на фоне */
+}
+
+/* Добавьте дополнительные классы для других коктейлей по аналогии */

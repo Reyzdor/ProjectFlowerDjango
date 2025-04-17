@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import json
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,6 +10,11 @@ from django.urls import reverse
 from blog.models import Category, Flowers, Basket, Order, OrderTime
 from django.contrib.auth.decorators import login_required  
 from django.views.decorators.csrf import csrf_exempt
+=======
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.conf import settings
+>>>>>>> 02e56ac (Commit: Update HTML)
 
 
 def logout_view(request):
@@ -28,12 +34,17 @@ def index(request):
         'flowers': flowers,
         'categories': categories,
 <<<<<<< HEAD
+<<<<<<< HEAD
         'flowers': flowers,
 =======
 >>>>>>> 28078ce (+Js, +btsrp, +html)
+=======
+        'SETTINGS': settings,
+>>>>>>> 02e56ac (Commit: Update HTML)
     }
     return render(request, 'blog/index.html', context)
 
+<<<<<<< HEAD
 
 def flower_id(request, flower_id):
     flower = get_object_or_404(Flowers, pk=flower_id)
@@ -379,3 +390,11 @@ def save_delivery_data(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+=======
+    return render(
+        request,
+        'blog/index.html',
+        context,
+    )
+
+>>>>>>> 02e56ac (Commit: Update HTML)

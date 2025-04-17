@@ -1,4 +1,5 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,3 +25,19 @@ urlpatterns = [
     path('save-delivery-data/', save_delivery_data, name='save_delivery_data'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+from blog.views import index
+from blog import views
+
+urlpatterns = [      
+    path('', index, name='index'),
+    path('admin/', admin.site.urls),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 02e56ac (Commit: Update HTML)
