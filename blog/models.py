@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+<<<<<<< HEAD
 from django.utils import timezone
 
 <<<<<<< HEAD
 from django.utils.text import slugify  # Импорт slugify для автоматической генерации slug
 =======
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
+=======
+>>>>>>> 3f75e9e (+basket.html + views)
 
 class Category(models.Model):
     title = models.CharField(
@@ -175,6 +178,7 @@ class Basket(models.Model):
 
     
     class Meta:
+<<<<<<< HEAD
         verbose_name = 'корзина'
 
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
@@ -184,12 +188,18 @@ class Basket(models.Model):
 
     
     class Meta:
+=======
+>>>>>>> 3f75e9e (+basket.html + views)
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'product'], 
                 name='unique_user_product'
             ),
+<<<<<<< HEAD
         ]
 
 
     
+=======
+        ]
+>>>>>>> 3f75e9e (+basket.html + views)

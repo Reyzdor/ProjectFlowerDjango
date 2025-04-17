@@ -1,3 +1,4 @@
+# urls.py (без изменений)
 from django.contrib import admin
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5,6 +6,9 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3f75e9e (+basket.html + views)
 from blog.views import *
 
 urlpatterns = [
@@ -14,11 +18,15 @@ urlpatterns = [
     path('login/', login_view, name='login'),  
     path('registration/', reg_view, name='registration'),  
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3f75e9e (+basket.html + views)
     path('logout/', logout, name='logout'), 
     path('basket/', basket, name='basket'),
     path('add_basket/', add_basket, name='add_basket'),
     path('update_quantity/', update_quantity, name='update_quantity'),
     path('remove_from_basket/<int:item_id>/', remove_from_basket, name='remove_from_basket'),
+<<<<<<< HEAD
 <<<<<<< HEAD
     path('order/success/<int:order_id>/', order_success, name='order_success'),
     path('process_delivery/', process_delivery, name='process_delivery'), 
@@ -71,3 +79,6 @@ urlpatterns = [
     path('delivery/', delivery_view, name='delivery'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
+=======
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 3f75e9e (+basket.html + views)

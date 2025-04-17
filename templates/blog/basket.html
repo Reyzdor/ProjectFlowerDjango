@@ -1,7 +1,7 @@
 {% extends 'blog/index.html' %}
-{% load static %}
 
 {% block content %}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container" style="padding-bottom: 180px; padding-top: 0;">
@@ -20,10 +20,21 @@
             <div class="col-auto">
                 <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="margin-top: 5px;">
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
+=======
+<div class="container" style="padding-bottom: 180px; padding-top: 0;">
+    <div style="margin-top: -40px;">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-auto">
+                <h1 class="mb-0" style="margin-bottom: 5px !important;">Ваша корзина</h1> <!-- 5px отступ до кнопки -->
+            </div>
+            <div class="col-auto">
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="margin-top: 5px;"> <!-- 5px отступ -->
+>>>>>>> 3f75e9e (+basket.html + views)
                     ← Продолжить покупки
                 </a>
             </div>
         </div>
+<<<<<<< HEAD
     </div>
 <<<<<<< HEAD
     
@@ -92,10 +103,15 @@
     <!-- Отладочная информация (можно убрать после проверки) -->
     <div class="alert alert-secondary d-none d-md-block">
         <small>DEBUG: Session cart = {{ request.session.cart }}</small>
+=======
+>>>>>>> 3f75e9e (+basket.html + views)
     </div>
 <<<<<<< HEAD
 
+
+
     {% if basket_items %}
+<<<<<<< HEAD
     <div class="table-responsive">
         <table class="table">
             <thead class="table-light">
@@ -777,23 +793,95 @@
         <a href="{% url 'index' %}" class="btn btn-primary btn-lg px-4">
             <i class="bi bi-shop me-2"></i>В каталог
         </a>
+=======
+    <div class="basket-container" style="margin-top: 5px;"> 
+        <div class="basket-grid">
+            {% for item in basket_items %}
+            <div class="basket-item">
+                <div class="basket-img">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                </div>
+                <div class="basket-info">
+                    <h3>{{ item.product.title }}</h3>
+                    <p>Артикул: {{ item.product.id }}</p>
+                    <p class="price">{{ item.product.price }} ₽</p>
+                </div>
+                <div class="basket-controls">
+                    <form method="post" action="{% url 'update_quantity' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <button type="submit" name="action" value="decrease" class="btn-qty">−</button>
+                        <span>{{ item.quantity }}</span>
+                        <button type="submit" name="action" value="increase" class="btn-qty">+</button>
+                    </form>
+                    <form method="post" action="{% url 'remove_from_basket' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-remove">🗑 Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="order-summary-fixed">
+        <div class="order-summary-content">
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Итог заказа</h3>
+                    <div class="summary-row">
+                        <span>Товары ({{ basket_items|length }})</span>
+                        <span>{{ total_price }} ₽</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Доставка</span>
+                        <span>Бесплатно</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-total">
+                        <h4>Итого</h4>
+                        <h4>{{ total_price }} ₽</h4>
+                    </div>
+                    <a href="#" class="btn-pink">Оформить заказ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+        <h2>Ваша корзина пуста</h2>
+        <p>Добавьте товары из каталога</p>
+        <a href="{% url 'index' %}" class="btn-pink">← Вернуться к покупкам</a>
+>>>>>>> 3f75e9e (+basket.html + views)
     </div>
     {% endif %}
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Подтверждение удаления
-    document.querySelectorAll('.btn-outline-danger').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if(!confirm('Точно удалить товар из корзины?')) {
-                e.preventDefault();
-            }
-        });
-    });
+<style>
+    
+    .container h1 {
+        margin-bottom: 0px !important;
+        display: block !important;
+    }
+    .container .btn-outline-secondary {
+        margin-top: 20px !important;
+        display: inline-block !important;
+    }
+    .basket-container {
+        margin-top: 30px !important;
+        clear: both !important;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 15px;  
+        position: relative;
+    }
 
+<<<<<<< HEAD
     // Анимация при обновлении количества
     document.querySelectorAll('input[name="quantity"]').forEach(input => {
         input.addEventListener('change', function() {
@@ -809,3 +897,157 @@ document.addEventListener('DOMContentLoaded', function() {
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
 =======
 >>>>>>> cf5f2f3 (Apply basket changes: Save data through AJAX (recreated from 843058c))
+=======
+    .basket-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 180px; 
+    }
+
+    .basket-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        justify-items: center;
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .basket-item {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        aspect-ratio: 1 / 1.1;
+    }
+
+    .order-summary-fixed {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 15px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+
+    .order-summary-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .summary-item {
+        padding: 10px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+
+    .summary-total {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .basket-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 65%;
+        padding: 5px;
+    }
+
+    .basket-img img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 5px;
+    }
+
+    .basket-info h3 {
+        margin-bottom: 5px;
+        font-size: 1rem;
+    }
+
+    .price {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .basket-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .btn-qty {
+        background: #eee;
+        border: none;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 2px;
+        border-radius: 5px;
+    }
+
+    .btn-pink {
+        display: block;
+        padding: 12px;
+        background: #ff69b4;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    .btn-pink:hover {
+        background: #ff1493;
+    }
+
+    @media (max-width: 1024px) {
+        .basket-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .basket-grid {
+            grid-template-columns: repeat(1, 1fr);
+        }
+        
+        .summary-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .summary-total {
+            text-align: left;
+        }
+        
+        .container {
+            padding-bottom: 220px;
+        }
+    }
+</style>
+{% endblock %}
+>>>>>>> 3f75e9e (+basket.html + views)

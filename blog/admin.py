@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .models import Category, Flowers, Order, OrderTime, Basket
 =======
 from .models import User, Category, Flowers, Order, OrderTime, Basket
@@ -10,6 +11,9 @@ from .models import User, Category, Flowers, Order, OrderTime, Basket
 class UserAdmin(admin.ModelAdmin):
     ...
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+from .models import Category, Flowers, Order, OrderTime, Basket
+>>>>>>> 3f75e9e (+basket.html + views)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

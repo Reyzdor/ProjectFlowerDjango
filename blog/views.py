@@ -6,6 +6,7 @@ import json
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
+<<<<<<< HEAD
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -42,6 +43,13 @@ from blog.models import Category, Flowers
 >>>>>>> bf0b456 (Commit: +Login +Reg)
 =======
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
+=======
+from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from blog.models import Category, Flowers, Basket
+>>>>>>> 3f75e9e (+basket.html + views)
 
 def index(request):
     categories = Category.objects.all()
@@ -150,6 +158,7 @@ def logout(request):
     messages.info(request, 'Вы вышли из системы')
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     return redirect('login')
 
 def basket(request):
@@ -182,6 +191,29 @@ def basket(request):
     return render(request, 'blog/basket.html', context)
 
 
+=======
+    return redirect('login')
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from blog.models import Flowers, Basket
+
+def basket(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    user = request.user
+    basket_items = Basket.objects.filter(user=user)
+    total_price = sum(item.product.price * item.quantity for item in basket_items)
+    
+    context = {
+        'basket_items': basket_items,
+        'total_price': total_price,
+    }
+    return render(request, 'blog/basket.html', context)
+
+>>>>>>> 3f75e9e (+basket.html + views)
 def add_basket(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -193,7 +225,11 @@ def add_basket(request):
         try:
             product = Flowers.objects.get(id=product_id)
             
+<<<<<<< HEAD
             if product.stock < -1000:
+=======
+            if product.stock < 1:
+>>>>>>> 3f75e9e (+basket.html + views)
                 messages.error(request, 'Этот цветок закончился в наличии')
                 return redirect(request.META.get('HTTP_REFERER', 'index'))
             
@@ -219,6 +255,7 @@ def add_basket(request):
 def update_quantity(request):
     if not request.user.is_authenticated:
         return redirect('login')
+<<<<<<< HEAD
 
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
@@ -272,6 +309,33 @@ def update_quantity(request):
             print(f"Ошибка в update_quantity: {e}")
             messages.error(request, 'Произошла ошибка. Попробуйте ещё раз.')
 
+=======
+    
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        action = request.POST.get('action')
+        
+        try:
+            basket_item = Basket.objects.get(id=item_id, user=request.user)
+            product = basket_item.product
+            
+            if action == 'increase':
+                if basket_item.quantity >= product.stock:
+                    messages.error(request, 'Недостаточно товара на складе')
+                else:
+                    basket_item.quantity += 1
+                    basket_item.save()
+            elif action == 'decrease':
+                if basket_item.quantity > 1:
+                    basket_item.quantity -= 1
+                    basket_item.save()
+                else:
+                    basket_item.delete()
+            return redirect('basket')
+        except Basket.DoesNotExist:
+            pass
+            
+>>>>>>> 3f75e9e (+basket.html + views)
     return redirect('basket')
 
 def remove_from_basket(request, item_id):
@@ -281,6 +345,7 @@ def remove_from_basket(request, item_id):
     basket_item = get_object_or_404(Basket, id=item_id, user=request.user)
     basket_item.delete()
     
+<<<<<<< HEAD
     return redirect('basket')
 
 @login_required
@@ -668,3 +733,6 @@ def save_delivery_data(request):
         messages.error(request, 'Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.')
         return redirect('delivery')
 >>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
+=======
+    return redirect('basket')
+>>>>>>> 3f75e9e (+basket.html + views)
