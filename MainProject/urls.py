@@ -13,6 +13,7 @@ urlpatterns = [
     path('flower/<int:flower_id>/', flower_id, name='flower_detail'),
     path('login/', login_view, name='login'),  
     path('registration/', reg_view, name='registration'),  
+<<<<<<< HEAD
     path('logout/', logout, name='logout'), 
     path('basket/', basket, name='basket'),
     path('add_basket/', add_basket, name='add_basket'),
@@ -57,6 +58,8 @@ urlpatterns = [
 =======
     path('login/', login_view, name='login_view'),  
     path('registration/', reg_view, name='reg_view'),  
+=======
+>>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
     path('logout/', logout, name='logout'),  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 >>>>>>> bf0b456 (Commit: +Login +Reg)

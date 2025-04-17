@@ -390,8 +390,15 @@
             box-shadow: 0 12px 24px rgba(255, 159, 223, 0.25) !important;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         .navbar-text {
+=======
+        
+        /* Стили для блока пользователя */
+        .navbar-text {
+            color: var(--text-color) !important;
+>>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
             font-weight: 500;
         }
         
@@ -405,6 +412,10 @@
             color: white;
         }
         
+<<<<<<< HEAD
+=======
+        /* Стили для модального окна */
+>>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
         .modal-content {
             border-radius: 12px;
             overflow: hidden;
@@ -420,6 +431,7 @@
             color: var(--text-color);
             font-weight: 600;
         }
+<<<<<<< HEAD
 
         .text-on-video {
             position: absolute;
@@ -530,6 +542,8 @@
         }
 =======
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+>>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
     </style>
 </head>
   
@@ -911,6 +925,16 @@
                     </li>
                     {% endfor %}
                 </ul>
+                
+                <!-- Блок пользователя -->
+                <div class="ms-auto d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-text me-3">Привет, {{ user.username }}!</span>
+                        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-custom">Авторизоваться</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
@@ -963,6 +987,25 @@
     <footer class="text-white text-center p-3 mt-5">
         <p class="m-0">&copy; CUSTOM BLOOMS</p>
     </footer>
+
+    <!-- Модальное окно авторизации -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Требуется авторизация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Чтобы добавить товар в корзину, пожалуйста, авторизуйтесь.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <a href="{% url 'login' %}" class="btn btn-custom">Авторизоваться</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -1017,7 +1060,7 @@
                 popUp.classList.add('show');
             }, 500);
 
-            // Функция для добавления в корзину
+            // Функция для получения CSRF токена
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -1037,6 +1080,16 @@
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
+                    
+                    // Проверяем, авторизован ли пользователь
+                    {% if not user.is_authenticated %}
+                        // Показываем модальное окно, если пользователь не авторизован
+                        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                        loginModal.show();
+                        return;
+                    {% endif %}
+                    
+                    // Если пользователь авторизован, добавляем в корзину
                     const flowerId = this.getAttribute('data-flower-id');
                     const csrftoken = getCookie('csrftoken');
                     

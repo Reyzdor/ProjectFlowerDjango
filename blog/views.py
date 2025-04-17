@@ -143,6 +143,7 @@ def logout(request):
     auth_logout(request)
     messages.info(request, 'Вы вышли из системы')
 <<<<<<< HEAD
+<<<<<<< HEAD
     return redirect('login')
 
 def basket(request):
@@ -446,3 +447,6 @@ def save_delivery_data(request):
 =======
     return redirect('login_view')
 >>>>>>> bf0b456 (Commit: +Login +Reg)
+=======
+    return redirect('login')
+>>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
