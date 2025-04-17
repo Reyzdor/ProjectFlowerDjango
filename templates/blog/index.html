@@ -399,6 +399,39 @@
             font-size: 3rem;
             text-align: justify;
         }
+        html, body {
+            overflow-x: hidden;
+        }
+        .review-hand {
+            margin-bottom: 50px;
+        }
+        
+        .review-hand:hover .review-card:nth-child(1) {
+            transform: rotate(-25deg) translateX(-10px);
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        
+        .review-hand:hover .review-card:nth-child(2) {
+            transform: scale(1.1);
+            z-index: 3;
+            transition: transform 0.3s ease;
+        }
+        
+        .review-hand:hover .review-card:nth-child(3) {
+            transform: rotate(25deg) translateX(10px);
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        .review-group {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .review-group:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }        
+        
     </style>
 </head>
   
@@ -453,7 +486,7 @@
     <main class="container-fluid my-5 p-0">
         {% if request.resolver_match.url_name == "index" %}
         <section class="video-section" style="position: relative; width: 100%; height: auto; margin-top: -50px; overflow: hidden;">
-            <video autoplay loop muted playsinline style="width: 100%; height: 100%; margin-top: -50px; object-fit: cover; display: block;">
+            <video autoplay loop muted playsinline style="width: 100%; max-width: 100vw; height: 50%; object-fit: cover; display: block;">
                 <source src="{% static 'video/main.mp4' %}" type="video/mp4">
                 Ваш браузер не поддерживает просмотр видео.
             </video>
@@ -628,7 +661,7 @@
             <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
                 <img src="{% static 'images/uploads/42.jpg' %}" alt="Фото 1" class="zoom-effect"
                      style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
-                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Упрощенный Порядок Дарения</h3>
+                <h3 style="font-family: 'Georgia', serif; font-size: 1.3rem; font-weight: lighter; color: #5a2d50; margin-bottom: 20px;">Упрощенный Порядок Дарения</h3>
                 <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
                     Ознакомьтесь с нашим ассортиментом и выберите то, что, по вашему мнению, порадует получателя — будь то цветы, растения или стильные аксессуары.
                 </p>
@@ -636,7 +669,7 @@
             <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
                 <img src="{% static 'images/uploads/43.jpg' %}" alt="Фото 2" class="zoom-effect"
                      style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
-                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Быстрая Доставка</h3>
+                     <h3 style="font-family: 'Georgia', serif; font-size: 1.3rem; font-weight: lighter; color: #5a2d50; margin-bottom: 20px;">Быстрая Доставка</h3>
                 <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
                     Мы понимаем, как важна для вас быстрая доставка, поэтому предлагаем максимально удобный и оперативный сервис.
                 </p>
@@ -644,7 +677,7 @@
             <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
                 <img src="{% static 'images/uploads/44.jpg' %}" alt="Фото 3" class="zoom-effect"
                      style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
-                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Современный Дизайн</h3>
+                <h3 style="font-family: 'Georgia', serif; font-size: 1.3rem; font-weight: lighter; color: #5a2d50; margin-bottom: 20px;">Современный Дизайн</h3>
                 <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
                     Мы стремимся создавать продукцию, которая гармонично вписывается в современный дизайн и стиль жизни.
                 </p>
@@ -652,13 +685,60 @@
         </div>
     </div>
     
-
     <hr class="divider">
+
+
+    <section class="review-section" style="margin: 50px 0; text-align: center;">
+        <!-- Первый отзыв -->
+        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-right: 460px;">
+            <img src="{% static 'images/uploads/47.jpg' %}" alt="Отзыв 1 Левый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
+            <img src="{% static 'images/uploads/48.jpg' %}" alt="Отзыв 1 Центр"
+                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
+            <img src="{% static 'images/uploads/49.jpg' %}" alt="Отзыв 1 Правый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
+        </div>
+    
+        <!-- Второй отзыв -->
+        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-left: -180px;">
+            <img src="{% static 'images/uploads/50.jpg' %}" alt="Отзыв 2 Левый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
+            <img src="{% static 'images/uploads/51.jpg' %}" alt="Отзыв 2 Центр"
+                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
+            <img src="{% static 'images/uploads/52.jpg' %}" alt="Отзыв 2 Правый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
+        </div>
+    
+        <!-- Третий отзыв -->
+        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-left: 270px;">
+            <img src="{% static 'images/uploads/53.jpg' %}" alt="Отзыв 3 Левый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
+            <img src="{% static 'images/uploads/54.jpg' %}" alt="Отзыв 3 Центр"
+                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
+            <img src="{% static 'images/uploads/55.jpg' %}" alt="Отзыв 3 Правый"
+                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
+        </div>
+    </section>
+    
+    
+    
     
 
-    <footer class="text-white text-center p-3 mt-5">
+
+    {% comment %} <hr class="divider"> {% endcomment %}
+    
+    {% comment %} <section class="video-section" style="position: relative; width: 100%; height: auto; overflow: hidden; margin-top: -41px;">
+        <video autoplay loop muted playsinline style="width: 100%; max-width: 100%; height: auto; object-fit: cover; display: block; border-radius: 10px;">
+            <source src="{% static 'video/main2.mp4' %}" type="video/mp4">
+            Ваш браузер не поддерживает просмотр видео.
+        </video>
+        <div class="text-on-video" style="position: absolute; bottom: 20px; left: 20px; color: white; font-family: 'Georgia', sans-serif; font-size: 1.5rem; text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); z-index: 10;">
+        </div>
+    </section>
+
+    {% comment %} <footer class="text-white text-center p-3 mt-5">
         <p class="m-0">&copy; CUSTOM BLOOMS</p>
-    </footer>
+    </footer> {% endcomment %} 
     
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
