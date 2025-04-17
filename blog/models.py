@@ -147,6 +147,7 @@ class Basket(models.Model):
         on_delete=models.CASCADE,   
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     quantity = models.PositiveIntegerField(
         default=1,
         verbose_name='количество'
@@ -154,6 +155,11 @@ class Basket(models.Model):
     stock_basket = models.PositiveIntegerField(
         default=0,
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+    quantity = models.PositiveIntegerField(
+        default=1,
+        verbose_name='количество'
+>>>>>>> bf0b456 (Commit: +Login +Reg)
     )
     created_timestamp = models.DateTimeField(
         auto_now_add=True,
@@ -163,6 +169,7 @@ class Basket(models.Model):
 
     def __str__(self):
         return f"Корзина для {self.user} | Товар {self.product}"
+
     
     class Meta:
         verbose_name = 'корзина'

@@ -24,10 +24,18 @@ def logout_view(request):
     return redirect('blog/login.html')
 =======
 from django.shortcuts import render, get_object_or_404, redirect
+<<<<<<< HEAD
 from django.http import HttpResponse
 from django.conf import settings
 from blog.models import User, Category, Flowers, Order, OrderTime
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from blog.models import Category, Flowers
+>>>>>>> bf0b456 (Commit: +Login +Reg)
 
 def index(request):
     categories = Category.objects.all()
@@ -36,11 +44,14 @@ def index(request):
 =======
     flowers = Flowers.objects.all()
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 >>>>>>> 28078ce (+Js, +btsrp, +html)
 =======
     
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+>>>>>>> bf0b456 (Commit: +Login +Reg)
     context = {
         'categories': categories,
 <<<<<<< HEAD
@@ -63,6 +74,7 @@ def flower_id(request, flower_id):
         'flower': flower,
         'additional_flower': additional_flower,
         'other_flowers': other_flowers,
+<<<<<<< HEAD
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
         'SETTINGS': settings,
 >>>>>>> 02e56ac (Commit: Update HTML)
@@ -81,6 +93,9 @@ def flower_id(request, flower_id):
         'additional_flower': additional_flower,
         'other_flowers': other_flowers,
     }
+=======
+    }
+>>>>>>> bf0b456 (Commit: +Login +Reg)
     return render(request, 'blog/flower_detail.html', context)
 
 def reg_view(request):
@@ -127,6 +142,7 @@ def login_view(request):
 def logout(request):
     auth_logout(request)
     messages.info(request, 'Вы вышли из системы')
+<<<<<<< HEAD
     return redirect('login')
 
 def basket(request):
@@ -427,3 +443,6 @@ def save_delivery_data(request):
 =======
     return render(request, 'blog/flower_detail.html', context)
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
+=======
+    return redirect('login_view')
+>>>>>>> bf0b456 (Commit: +Login +Reg)
