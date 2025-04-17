@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Abhaya Libre';
+    src: url('{% static "fonts/AbhayaLibre-Regular.ttf" %}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Abhaya Libre', sans-serif;
+    color: var(--text-color);
+}
+
+.flower-1 {
+    transform: scale(0.7); /* 70% от оригинального размера */
+    top: 15%;
+    left: 10%;
+}
+
+.flower-2 {
+    transform: scale(0.5); /* 50% от оригинального размера */
+    top: 65%;
+    left: 85%;
+}
+
+.flower-3 {
+    transform: scale(0.6); /* 60% от оригинального размера */
+    top: 40%;
+    left: 75%;
+}
+
+.floating-flower {
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.site-title {
+    font-family: 'Great Vibes', cursive;
+}
+
+.image-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Равные отступы между картинками */
+}
+
+.category-image-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.category-card p {
+    margin-top: 18px; /* Подпись ниже на 8px */
+    font-family: 'AbhayaLibre-Bold', sans-serif;
+    font-size: 1rem;
+}

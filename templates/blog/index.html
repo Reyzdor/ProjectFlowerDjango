@@ -1,0 +1,747 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Blooms - Магазин цветов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --main-color: #FF9FDF;
+            --hover-color: #FF6EC7;
+            --bg-color: #FFF5FB;
+            --text-color: #5A2D50;
+        }
+        
+        @font-face {
+            font-family: 'AbhayaLibre-Bold';
+            src: url('{% static "fonts/AbhayaLibre-Bold.ttf" %}') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }        
+        
+        .site-title {
+            font-family: 'AbhayaLibre-Bold', sans-serif !important;
+            font-size: 1rem;
+            font-weight: 200;
+            letter-spacing: 1px;
+            color: var(--text-color);
+        }
+                
+        
+        .category-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    
+        .navbar-nav {
+            flex-wrap: nowrap;
+        }
+    
+        .nav-item {
+            margin-right: 15px;
+        }
+    
+        .navbar-text {
+            font-weight: bold;
+        }
+    
+        .btn-danger {
+            padding: 5px 10px;
+            font-weight: 600;
+        }
+
+        .itemsettings{
+           overflow: hidden;
+           width: 100%;
+        }
+
+        body {
+            font-family: 'Georgia', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-top: 20px;
+        }
+        
+        .site-title {
+            font-family: 'Georgia', sans-serif;
+            font-weight: 700;
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #FF6EC7, #FF9FDF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+            padding-right: 50px;
+            margin-bottom: 10px;
+        }
+        
+        .header-line {
+            height: 8px;
+            background: linear-gradient(90deg, #FF9FDF, #FF6EC7);
+            margin: 0 auto 30px;
+            width: 80%;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(255, 110, 199, 0.3);
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 10px rgba(255, 159, 223, 0.2);
+        }
+        
+        .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 159, 223, 0.3) !important;
+        }
+        
+        .floating-flower {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+            animation: floating 15s infinite ease-in-out;
+            opacity: 0.9;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 4px 8px rgba(255, 110, 199, 0.3));
+        }
+        
+        .flower-1 {
+            width: 70px;
+            top: 20%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .flower-2 {
+            width: 60px;
+            top: 75%;
+            left: 90%;
+            animation-delay: 5s;
+        }
+        
+        .flower-3 {
+            width: 65px;
+            top: 45%;
+            left: 85%;
+            animation-delay: 10s;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(5deg); }
+        }
+        
+        .btn-custom {
+            background-color: var(--main-color);
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+        
+        .btn-custom:hover {
+            background-color: var(--hover-color);
+            color: white;
+        }
+        
+        footer {
+            background: linear-gradient(45deg, #FF6EC7, #FF9FDF) !important;
+            box-shadow: 0 -2px 10px rgba(255, 159, 223, 0.3);
+        }
+        
+        .pop-up {
+            position: absolute;
+            width: 80px;
+            height: auto;
+            z-index: 1000;
+            pointer-events: none;
+            animation: swing 3s infinite ease-in-out;
+            opacity: 0;
+            transform-origin: bottom center;
+        }
+        
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .pop-up.show {
+            animation: swing 3s infinite ease-in-out, fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .icon {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .ms-auto {
+            margin-left: auto;
+        }
+
+        .gap {
+            gap: 15px;
+        }
+
+        .flower-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flower-card-img-container {
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .flower-card-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .flower-card:hover .flower-card-img {
+            transform: scale(1.05);
+        }
+        
+        .flower-card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+        }
+        
+        .flower-card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .flower-card-price {
+            font-size: 1.25rem;
+            color: var(--main-color);
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .flower-card-footer {
+            padding: 0 1.25rem 1.25rem;
+            background: transparent;
+            border: none;
+        }
+        
+        .flower-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(255, 159, 223, 0.25) !important;
+        }
+        
+        .navbar-text {
+            font-weight: 500;
+        }
+        
+        .btn-outline-danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+        }
+        
+        .modal-header {
+            background-color: var(--bg-color);
+            border-bottom: 2px solid var(--main-color);
+        }
+        
+        .modal-title {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .text-on-video {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-family: 'Georgia', sans-serif;
+            font-size: 1.5rem;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+            z-index: 10;
+        }
+
+        .text-section h2 {
+            position: relative;
+            font-family: 'Georgia', sans-serif;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+            margin-left: 20px;
+        }
+        
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .category-image-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-card p {
+            margin-top: 18px;
+            font-family: 'Georgia', sans-serif;
+            font-size: 1rem;
+        }
+
+        .visible-divider {
+            border: 0;
+            height: 3px;
+            background: var(--main-color);
+            box-shadow: 0px 4px 10px rgba(255, 110, 199, 0.5);
+            margin: 30px 0;
+        }
+        
+        .divider {
+            border: 0;
+            height: 2px;
+            background-color: #5a2d50;
+            margin: 40px 0;
+            box-shadow: 0 2px 4px rgba(90, 45, 80, 0.2);
+        }
+        .zoom-effect {
+            transition: transform 0.2s ease;
+        }
+        
+        .zoom-effect:hover {
+            transform: scale(1.03);
+        }
+        
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .image-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .col {
+            flex: 0 0 400px;
+        }
+        
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        
+        h3, p {
+            text-align: center;
+        }
+
+        .col-md-6 {
+            display: block;
+            text-align: justify;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .row {
+            align-items: flex-start;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 3rem;
+            text-align: justify;
+        }
+    </style>
+</head>
+  
+<body>
+    <header class="px-3" style="background-color: var(--bg-color);">
+        <div class="container text-center position-relative">
+            <a href="{% url 'index' %}" class="text-decoration-none">
+                <h1 class="m-0 site-title">CUSTOM BLOOMS</h1>
+            </a>
+            <div class="header-line"></div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white; padding-top: -5px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="color: var(--main-color) !important;">
+                <i class="bi bi-flower1"></i> Цветы
+            </a>
+        
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto d-flex flex-row gap-3">
+                    {% for category in categories %}
+                    <li class="nav-item">
+                        <a class="nav-link category-link" href="{% url 'category_detail' category.slug %}">
+                            <i class="bi bi-tag"></i> {{ category.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="ms-auto d-flex align-items-center gap">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-text">Привет, {{ user.username }}!</span>
+                        <a href="{% url 'basket' %}">
+                            <img src="{% static 'blog/decor_images/k.png' %}" class="icon" alt="Корзина">
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-custom">Авторизоваться</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+      
+
+    <main class="container-fluid my-5 p-0">
+        {% if request.resolver_match.url_name == "index" %}
+        <section class="video-section" style="position: relative; width: 100%; height: auto; margin-top: -50px; overflow: hidden;">
+            <video autoplay loop muted playsinline style="width: 100%; height: 100%; margin-top: -50px; object-fit: cover; display: block;">
+                <source src="{% static 'video/main.mp4' %}" type="video/mp4">
+                Ваш браузер не поддерживает просмотр видео.
+            </video>
+        
+            <div style="position: absolute; top: 50%; left: 150px; color: white; font-family: 'Georgia', sans-serif; z-index: 10; max-width: 600px;">
+                <p style="font-size: 2.5rem; margin: 0 0 20px 0; text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);">
+                    Скидка 15% На Категорию Розы
+                </p>
+                <p style="font-size: 1.2rem; margin: 0 0 20px 0; text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); line-height: 1.5;">
+                    Используйте уже встроенную скидку на ассортимент розы, чтобы порадовать своих близких. Выберите лучшие предложения прямо сейчас.
+                </p>
+                <a href="{% url 'category_detail' 'rose' %}" 
+                   class="btn" 
+                   style="margin-top: 20px; padding: 10px 20px; font-size: 1.2rem; background-color: #FF6EC7; color: white; text-decoration: none; border-radius: 5px;">
+                    Купить сейчас
+                </a>
+            </div>
+        </section>
+        <section class="categories-row" style="margin-top: 50px; text-align: center;">
+            <h2 style="font-family:'Georgia', sans-serif; font-size: 3.5rem; color: var(--text-color); margin-bottom: 30px;">
+            </h2>
+        
+            <div class="image-row" style="display: flex; justify-content: center; gap: -20px; flex-wrap: wrap;">
+                <div class="category-card" style="text-align: center; width: 300px;">
+                    <a href="{% url 'category_detail' 'category_slug_1' %}" class="category-image-link"
+                       style="display: block; width: 300px; height: 408px; overflow: hidden; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+                        <img src="{% static 'images/uploads/37.jpg' %}" alt="Категория 1"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </a>
+                    <p style="font-family: 'Georgia', sans-serif; font-size: 1rem; margin-top: 18px; font-weight: bold;">
+                        Для дня рождения
+                    </p>
+                </div>
+        
+                <div class="category-card" style="text-align: center; width: 300px;">
+                    <a href="{% url 'category_detail' 'category_slug_2' %}" class="category-image-link"
+                       style="display: block; width: 300px; height: 408px; overflow: hidden; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+                        <img src="{% static 'images/uploads/38.jpg' %}" alt="Категория 2"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </a>
+                    <p style="font-family: 'Georgia', sans-serif; font-size: 1rem; margin-top: 18px; font-weight: bold;">
+                        Для свадьбы
+                    </p>
+                </div>
+        
+                <div class="category-card" style="text-align: center; width: 300px;">
+                    <a href="{% url 'category_detail' 'category_slug_3' %}" class="category-image-link"
+                       style="display: block; width: 300px; height: 408px; overflow: hidden; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+                        <img src="{% static 'images/uploads/39.jpg' %}" alt="Категория 3"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </a>
+                    <p style="font-family: 'Georgia', sans-serif; font-size: 1rem; margin-top: 18px; font-weight: bold;">
+                        Дружба
+                    </p>
+                </div>
+        
+                <div class="category-card" style="text-align: center; width: 300px;">
+                    <a href="{% url 'category_detail' 'category_slug_4' %}" class="category-image-link"
+                       style="display: block; width: 300px; height: 408px; overflow: hidden; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+                        <img src="{% static 'images/uploads/40.jpg' %}" alt="Категория 4"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </a>
+                    <p style="font-family: 'Georgia', sans-serif; font-size: 1rem; margin-top: 18px; font-weight: bold;">
+                        Просто потому-что
+                    </p>
+                </div>
+        
+                <div class="category-card" style="text-align: center; width: 300px;">
+                    <a href="{% url 'category_detail' 'category_slug_5' %}" class="category-image-link"
+                       style="display: block; width: 300px; height: 408px; overflow: hidden; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;">
+                        <img src="{% static 'images/uploads/41.jpg' %}" alt="Категория 5"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </a>
+                    <p style="font-family: 'Georgia', sans-serif; font-size: 1rem; margin-top: 18px; font-weight: bold;">
+                        Поздравление
+                    </p>
+                </div>
+            </div>
+        </section>
+    
+    <hr class="divider">
+
+    <div class="row align-items-center" style="margin: 30px 0;">
+        <div class="col-md-6 d-flex justify-content-center">
+            <img src="{% static 'images/uploads/45.jpg' %}" alt="Описание изображения"
+                style="width: 100%; max-width: 500px; height: auto; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 40px;">
+        </div>
+    
+        <div class="col-md-6" style="max-width: 650px; margin: 0 auto; text-align: justify; padding: 50px;">
+            <h2 style="font-family: 'Georgia', serif; font-size: 2.5rem; color: var(--text-color); margin-bottom: 45px; margin-left: 10px;">Получено на ферме</h2>
+            <p style="font-family: 'Georgia', serif; font-size: 1.2rem; line-height: 1.8; color: var(--text-color); margin-bottom: 40px; margin-left: -100px;">
+                Мы ставим перед собой цель работать напрямую с фермами и инвестировать в людей, которые там трудятся. Мы верим, что именно такая прямая связь с производителями позволяет создавать прочные партнерские отношения.
+            </p>
+            <p style="font-family: 'Georgia', serif; font-size: 1.2rem; line-height: 1.8; color: var(--text-color); margin-bottom: 40px; margin-left: -100px;">
+                Каждый день, когда мы получаем свежесобранные цветы, мы уверены, что каждый букет несет в себе труд и страсть тех, кто их вырастил. Это не просто цветы — это результат тяжелого труда и любви к своему делу.
+            </p>
+        </div>
+    </div>
+    
+    <hr class="divider">
+    
+    <div class="row align-items-center flex-row-reverse" style="margin: 30px 0;">
+        <div class="col-md-6 d-flex justify-content-center">
+            <img src="{% static 'images/uploads/46.jpg' %}" alt="Описание изображения"
+                style="width: 100%; max-width: 500px; height: auto; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-left: 10px;">
+        </div>
+    
+        <div class="col-md-6" style="max-width: 600px; margin: 0 auto; text-align: justify; padding: 20px;">
+            <h2 style="font-family: 'Georgia', serif; font-size: 2.5rem; color: var(--text-color); margin-bottom: 45px; margin-left: 80px;">Свежесть гарантирована</h2>
+            <p style="font-family: 'Georgia', serif; font-size: 1.2rem; line-height: 1.8; color: var(--text-color); margin-bottom: 40px; margin-left: 60px;">
+                Мы гордимся тем, что можем гарантировать свежесть нашей продукции! Каждый букет и каждое растение, которые мы предлагаем, проходят строгий контроль качества, чтобы убедиться, что вы получаете только самое лучшее.
+            </p>
+            <p style="font-family: 'Georgia', serif; font-size: 1.2rem; line-height: 1.8; color: var(--text-color); margin-bottom: 40px; margin-left: 60px;">
+                Если ваш букет или растение не оправдали ожиданий, свяжитесь с нами. Мы готовы выслушать вас, чтобы сделать всё возможное для вашего удовлетворения!
+            </p>
+        </div>
+    </div>
+    
+
+    <hr class="divider">
+
+    <div style="text-align: center; font-family: 'Georgia', serif; font-size: 3rem; color: #5a2d50; padding: 20px;">
+        Покупайте наши хиты
+    </div>
+        
+
+        {% endif %}
+        
+    <div class="container text-center" style="max-width: 1200px; margin: 0 auto;">
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-5 justify-content-center">
+            {% for flower in flowers %}
+            <div class="col">
+                <div class="card h-100 shadow-sm flower-card">
+                    <a href="{% url 'flower_detail' flower.id %}" class="flower-card-img-container">
+                        <img src="{{ flower.image.url }}" 
+                            class="flower-card-img" 
+                            alt="{{ flower.title }}">
+                    </a>
+                    <div class="flower-card-body">
+                        <a href="{% url 'flower_detail' flower.id %}" class="text-decoration-none text-dark">
+                            <h5 class="card-title flower-card-title">{{ flower.title }}</h5>
+                            <p class="flower-card-price">{{ flower.price }} ₽</p>
+                        </a>
+                    </div>
+                    <div class="flower-card-footer">
+                        <form action="{% url 'add_basket' %}" id="myForm" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="flower_id" value="{{ flower.id }}">
+                            <button class="btn btn-custom w-100 add-to-cart" data-flower-id="{{ flower.id }}">
+                                <i class="bi bi-cart-plus"></i> Добавить в корзину
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="width:100% !important" class="col-12">
+                {% block content %}
+                {% endblock %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+    <hr class="divider">
+    <div style="text-align: center; font-family: 'Georgia', serif; font-size: 3rem; color: #5a2d50; padding: 20px;">
+        Почему Мы Разные
+    </div>
+    <div class="row align-items-center" style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="image-row" style="display: flex; justify-content: center; gap: 20px; align-items: flex-start;">
+            <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
+                <img src="{% static 'images/uploads/42.jpg' %}" alt="Фото 1" class="zoom-effect"
+                     style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
+                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Упрощенный Порядок Дарения</h3>
+                <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
+                    Ознакомьтесь с нашим ассортиментом и выберите то, что, по вашему мнению, порадует получателя — будь то цветы, растения или стильные аксессуары.
+                </p>
+            </div>
+            <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
+                <img src="{% static 'images/uploads/43.jpg' %}" alt="Фото 2" class="zoom-effect"
+                     style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
+                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Быстрая Доставка</h3>
+                <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
+                    Мы понимаем, как важна для вас быстрая доставка, поэтому предлагаем максимально удобный и оперативный сервис.
+                </p>
+            </div>
+            <div class="col" style="flex: 0 0 auto; text-align: center; margin: 0 10px;">
+                <img src="{% static 'images/uploads/44.jpg' %}" alt="Фото 3" class="zoom-effect"
+                     style="width: 400px; height: 600px; object-fit: cover; border-radius: 10px; margin-bottom: 25px;">
+                <h3 style="font-family: 'Georgia', serif; font-size: 1.4rem; font-weight: bold; color: #5a2d50; margin-bottom: 20px;">Современный Дизайн</h3>
+                <p style="font-family: 'Georgia', serif; font-size: 1rem; line-height: 1.8; color: var(--text-color); max-width: 360px; margin: 0 auto;">
+                    Мы стремимся создавать продукцию, которая гармонично вписывается в современный дизайн и стиль жизни.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+
+    <hr class="divider">
+    
+
+    <footer class="text-white text-center p-3 mt-5">
+        <p class="m-0">&copy; CUSTOM BLOOMS</p>
+    </footer>
+    
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Требуется авторизация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Чтобы добавить товар в корзину, пожалуйста, авторизуйтесь.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <a href="{% url 'login' %}" class="btn btn-custom">Авторизоваться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            console.log("Форма не отправлена!");
+        });
+     
+        document.addEventListener('DOMContentLoaded', function() {
+            const popUp = document.createElement('img');
+            popUp.className = 'pop-up';
+            
+            const title = document.querySelector('.site-title');
+            
+            const text = title.textContent;
+            const lastSIndex = text.lastIndexOf('S');
+            
+            if (lastSIndex !== -1) {
+                const tempSpan = document.createElement('span');
+                tempSpan.textContent = text.substring(0, lastSIndex + 1);
+                tempSpan.style.visibility = 'hidden';
+                tempSpan.style.position = 'absolute';
+                tempSpan.style.fontFamily = getComputedStyle(title).fontFamily;
+                tempSpan.style.fontSize = getComputedStyle(title).fontSize;
+                tempSpan.style.fontWeight = getComputedStyle(title).fontWeight;
+                tempSpan.style.letterSpacing = getComputedStyle(title).letterSpacing;
+                
+                title.parentNode.insertBefore(tempSpan, title.nextSibling);
+                
+                const rect = tempSpan.getBoundingClientRect();
+                const titleRect = title.getBoundingClientRect();
+                
+                popUp.style.left = `${rect.right - titleRect.left - 20}px`;
+                popUp.style.top = `${rect.top - titleRect.top - 16}px`;
+                
+                tempSpan.remove();
+            } else {
+                popUp.style.left = 'calc(100% - 60px)';
+                popUp.style.top = '-16px';
+            }
+            
+            title.parentNode.appendChild(popUp);
+            
+            setTimeout(() => {
+                popUp.classList.add('show');
+            }, 500);
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+        });
+    </script>
+</body>
+</html>

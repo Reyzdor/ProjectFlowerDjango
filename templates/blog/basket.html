@@ -1,0 +1,436 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
+<div class="container" style="padding-bottom: 180px; padding-top: 0;">
+    <div style="margin-top: 0;">
+        <div style="margin-bottom: 20px; margin-left: 20px;">
+            <div style="margin-bottom: 20px;">
+                <h1 class="mb-0" style="margin-bottom: 10px !important;">Ваша корзина</h1>
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto;">
+                    ← Продолжить покупки
+                </a>
+            </div>
+        </div>
+    </div>
+    
+
+    {% if basket_items %}
+    <div class="basket-container" style="margin-top: 30px !important;"> 
+        <div class="basket-grid">
+            {% for item in basket_items %}
+            <div class="basket-item">
+                <div class="basket-img">
+                    <img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                </div>
+                <div class="basket-info">
+                    <h3>{{ item.product.title }}</h3>
+                    <p>Артикул: {{ item.product.id }}</p>
+                    <p class="price">{{ item.product.price }} ₽</p>
+                </div>
+                <div class="basket-controls">
+                    <form method="post" action="{% url 'update_quantity' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <button type="submit" name="action" value="decrease" class="btn-qty">−</button>
+                        <span>{{ item.quantity }}</span>
+                        <button type="submit" name="action" value="increase" class="btn-qty">+</button>
+                    </form>
+                    <form method="post" action="{% url 'remove_from_basket' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-remove">🗑 Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+    <div class="order-summary-fixed">
+        <div class="order-summary-content">
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Итог заказа</h3>
+                    <div class="summary-row">
+                        <span>Товары ({{ basket_items|length }})</span>
+                        <span>{{ total_price }} ₽</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Доставка</span>
+                        <span>Бесплатно</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-total">
+                        <h4>Итого</h4>
+                        <h4>{{ total_price }} ₽</h4>
+                    </div>
+                    <button id="openDeliveryModal" class="btn-pink">Оформить заказ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h2>Ваша корзина пуста</h2>
+        <p>Добавьте товары из каталога</p>
+        <a href="{% url 'index' %}" class="btn-pink">← Вернуться к покупкам</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Модальное окно доставки (без изменений) -->
+<div id="deliveryModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:white;padding:25px;border-radius:10px;width:90%;max-width:700px;">
+        <h2 style="margin-top:0;">Выберите адрес доставки</h2>
+        
+        <div id="map" style="width:100%;height:400px;margin:15px 0;border:1px solid #ddd;"></div>
+        
+        <form id="deliveryForm" method="post" action="{% url 'process_delivery' %}" style="display:flex;flex-direction:column;gap:20px;">
+            {% csrf_token %}
+            <input 
+                type="text" 
+                id="deliveryAddress" 
+                name="address" 
+                placeholder="Кликните на карте" 
+                readonly 
+                required 
+                style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;font-size:16px;">
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+            
+            {% for item in basket_items %}
+            <input type="hidden" name="product_{{ item.product.id }}" value="{{ item.quantity }}">
+            {% endfor %}
+            
+            <div style="display:flex;gap:10px;">
+                <button type="button" id="closeModal" style="flex:1;padding:10px;background:#ddd;border:none;border-radius:5px;">
+                    Отмена
+                </button>
+                <button type="submit" style="flex:1;padding:10px;background:#ff69b4;color:white;border:none;border-radius:5px;">
+                    Подтвердить адрес
+                </button>
+            </div>
+        </form>
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <link rel="stylesheet" href="{% static 'blog/css/basket.css' %}">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('deliveryModal');
+                const openBtn = document.getElementById('openDeliveryModal');
+                const closeBtn = document.getElementById('closeModal');
+                const deliveryForm = document.getElementById('deliveryForm');
+                
+                let map, marker;
+                const API_KEY = '8057af9d99dc4ad9a82492109f13714b';
+                const DEFAULT_COORDS = [55.751574, 37.573856];
+                const DEFAULT_ZOOM = 13;
+            
+                openBtn.addEventListener('click', openModal);
+                closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) closeModal();
+                });
+            
+                function openModal() {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    initMap();
+                }
+            
+                function closeModal() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            
+                async function getAddress(lat, lng) {
+                    try {
+                        const response = await fetch(
+                            `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=${API_KEY}`
+                        );
+                        const data = await response.json();
+                        return data.features[0]?.properties?.formatted || 'Адрес не определен';
+                    } catch (error) {
+                        console.error('Ошибка при получении адреса:', error);
+                        return 'Не удалось определить адрес';
+                    }
+                }
+            
+                function initMap() {
+                    if (map) {
+                        map.invalidateSize();
+                        return;
+                    }
+            
+                    map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    
+                    map.on('click', async function(e) {
+                        const { lat, lng } = e.latlng;
+                        document.getElementById('deliveryAddress').value = "Определяем адрес...";
+                        
+                        try {
+                            const address = await getAddress(lat, lng);
+                            document.getElementById('latitude').value = lat;
+                            document.getElementById('longitude').value = lng;
+                            document.getElementById('deliveryAddress').value = address;
+                            
+                            updateMarker(lat, lng, address);
+                        } catch (error) {
+                            console.error('Ошибка:', error);
+                            document.getElementById('deliveryAddress').value = 'Ошибка при определении адреса';
+                        }
+                    });
+                    
+                    marker = L.marker(DEFAULT_COORDS, {
+                        draggable: true
+                    }).addTo(map)
+                    .bindPopup("<b>Укажите место доставки</b>")
+                    .openPopup();
+                    
+                    marker.on('dragend', async function() {
+                        const position = marker.getLatLng();
+                        document.getElementById('deliveryAddress').value = "Определяем адрес...";
+                        
+                        try {
+                            const address = await getAddress(position.lat, position.lng);
+                            document.getElementById('latitude').value = position.lat;
+                            document.getElementById('longitude').value = position.lng;
+                            document.getElementById('deliveryAddress').value = address;
+                            marker.setPopupContent(`<b>Адрес доставки:</b><br>${address}`).openPopup();
+                        } catch (error) {
+                            console.error('Ошибка:', error);
+                            document.getElementById('deliveryAddress').value = 'Ошибка при определении адреса';
+                        }
+                    });
+                }
+            
+                function updateMarker(lat, lng, address) {
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([lat, lng], {
+                        draggable: true
+                    }).addTo(map)
+                    .bindPopup(`<b>Адрес доставки:</b><br>${address}`)
+                    .openPopup();
+                }
+            
+                deliveryForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const address = document.getElementById('deliveryAddress').value;
+                    const lat = document.getElementById('latitude').value;
+                    const lng = document.getElementById('longitude').value;
+                    
+                    if (!address || address.includes('Определяем') || address.includes('Ошибка')) {
+                        alert('Пожалуйста, укажите корректный адрес доставки');
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch("{% url 'save_delivery_data' %}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: JSON.stringify({
+                                address: address,
+                                latitude: lat,
+                                longitude: lng
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            window.location.href = "{% url 'delivery' %}";
+                        } else {
+                            throw new Error('Ошибка сервера');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        alert('Произошла ошибка при сохранении адреса');
+                    }
+                });
+            
+                
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+            });
+
+</script>
+<script src="{% static 'blog/js/detail.js' %}"></script>
+<style>
+    .container h1 {
+        margin-bottom: 0px !important;
+        display: block !important;
+    }
+    .container .btn-outline-secondary {
+        margin-top: 10px !important;
+        display: inline-block !important;
+    }
+    .basket-container {
+        margin-top: 30px !important;
+        clear: both !important;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 15px;  
+        position: relative;
+    }
+    .basket-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 180px; 
+    }
+    .basket-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        justify-items: center;
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    .basket-item {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        aspect-ratio: 1 / 1.1;
+    }
+    .order-summary-fixed {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 15px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    .order-summary-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    .summary-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+        align-items: center;
+    }
+    .summary-item {
+        padding: 10px;
+    }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+    .summary-total {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+    .basket-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 65%;
+        padding: 5px;
+    }
+    .basket-img img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 5px;
+    }
+    .basket-info h3 {
+        margin-bottom: 5px;
+        font-size: 1rem;
+    }
+    .price {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    .basket-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+    .btn-qty {
+        background: #eee;
+        border: none;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 2px;
+        border-radius: 5px;
+    }
+    .btn-remove {
+        background: none;
+        border: none;
+        color: #ff4757;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+    .btn-pink {
+        display: block;
+        padding: 12px;
+        background: #ff69b4;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-pink:hover {
+        background: #ff1493;
+    }
+    @media (max-width: 1024px) {
+        .basket-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 768px) {
+        .basket-grid {
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .summary-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .summary-total {
+            text-align: left;
+        }
+        .container {
+            padding-bottom: 220px;
+        }
+    }
+</style>
+{% endblock %}

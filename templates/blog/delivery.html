@@ -1,0 +1,323 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
+
+
+
+    <div class="container" style="
+    padding-bottom: 180px;
+    padding-top: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    padding: 10px 15px;
+    margin: 0 auto;
+    ">
+<!-- Заголовок и кнопка - теперь строго сверху -->
+    <div style="
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 15px;
+    ">
+
+    <h1 style="
+color: #5a2d50;
+font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+font-weight: 500;
+font-size: 35px;
+margin-right: 640px;
+margin-bottom: 10px;
+max-width: 1200px;
+margin-top: -40px;
+">Подтверждение заказа</h1>
+
+<a href="{% url 'basket' %}" style="
+display: inline-block;
+background: transparent;
+color: #6c757d;
+border: 1px solid #6c757d;
+border-radius: 5px;
+padding: 8px 16px;
+margin-right: 820px;
+text-decoration: none;
+font-size: 15px;
+transition: all 0.3s;
+margin-top: 10px;
+">← Вернуться в корзину</a>
+</div>
+
+<!-- Основной контент (две колонки) -->
+<div style="
+display: flex;
+gap: 30px;
+width: 100%;
+justify-content: center;
+flex-wrap: wrap;
+padding: 0 15px;
+
+">
+<!-- Левая колонка (форма заказа) -->
+<div style="
+background: white;
+border-radius: 10px;
+padding: 25px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 500px;
+">
+<form method="post" action="{% url 'process_delivery' %}">
+    {% csrf_token %}
+    <input type="hidden" name="address" value="{{ address|default:'' }}">
+    <input type="hidden" name="latitude" value="{{ latitude|default:'' }}">
+    <input type="hidden" name="longitude" value="{{ longitude|default:'' }}">
+    
+    {% for item in basket_items %}
+    <input type="hidden" name="product_{{ item.product.id }}" value="{{ item.quantity }}">
+    {% endfor %}
+    
+    <h2 style="
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+    ">Контактные данные</h2>
+                
+                <div style="margin-bottom: 18px;">
+                    <label for="fullname" style="
+                        display: block;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                        color: #555;
+                    ">ФИО получателя*</label>
+                    <input type="text" id="fullname" name="fullname" required style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 15px;
+                    ">
+                </div>
+                
+                <div style="margin-bottom: 18px;">
+                    <label for="email" style="
+                        display: block;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                        color: #555;
+                    ">Email*</label>
+                    <input type="email" id="email" name="email" required style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 15px;
+                    ">
+                </div>
+                
+                <div style="margin-bottom: 18px;">
+                    <label for="phone" style="
+                        display: block;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                        color: #555;
+                    ">Телефон*</label>
+                    <input type="tel" id="phone" name="phone" required style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 15px;
+                    ">
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label for="delivery_time" style="
+                        display: block;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                        color: #555;
+                    ">Время доставки*</label>
+                    <select id="delivery_time" name="delivery_time" required style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 15px;
+                    ">
+                        <option value="">Выберите время</option>
+                        <option value="10:00-14:00">10:00-14:00</option>
+                        <option value="14:00-18:00">14:00-18:00</option>
+                        <option value="18:00-22:00">18:00-22:00</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 18px;">
+                    <label for="comment" style="
+                        display: block;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                        color: #555;
+                    ">Комментарий к заказу</label>
+                    <textarea id="comment" name="comment" rows="2" style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 15px;
+                        resize: vertical;
+                        min-height: 80px;
+                    "></textarea>
+                </div>
+
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    margin: 20px 0;
+                ">
+                    <input type="checkbox" id="agree" name="agree" required style="margin-right: 10px;">
+                    <label for="agree" style="font-size: 14px; color: #555;">
+                        Я согласен на обработку персональных данных
+                    </label>
+                </div>
+                
+                <button type="submit" style="
+                    background: #ff69b4;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 12px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    width: 100%;
+                ">Подтвердить заказ</button>
+            </form>
+        </div>
+
+        <!-- Правая колонка (информация о заказе) -->
+        <div style="
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        ">
+            <h2 style="
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                color: #1a1a1a;
+            ">Детали заказа</h2>
+            
+            <div style="margin-bottom: 18px;">
+                <h3 style="
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                    color: #1a1a1a;
+                ">Адрес доставки</h3>
+                <p style="font-size: 14px; color: #555;">{{ address|default:"Адрес не указан" }}</p>
+            </div>
+            
+            <link rel="stylesheet" href="{% static 'blog/css/delivery.css' %}">
+            <div style="height: 1px; background-color: #eee; margin: 18px 0;"></div>
+            
+            <div>
+                <img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up">
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <h3 style="
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                    color: #1a1a1a;
+                ">Состав заказа</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    {% for item in basket_items %}
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; color: #555;">
+                        <span>{{ item.product.title }} × {{ item.quantity }}</span>
+                        <span>{{ item.total_price }} ₽</span>
+                    </div>
+                    {% empty %}
+                    <div style="font-size: 14px; color: #555;">Корзина пуста</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div style="height: 1px; background-color: #eee; margin: 18px 0;"></div>
+            
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                font-weight: 600;
+                font-size: 16px;
+                color: #1a1a1a;
+                margin: 15px 0;
+            ">
+                <span>Итого:</span>
+                <span>{{ total_price|default:"0" }} ₽</span>
+            </div>
+
+            <div style="height: 1px; background-color: #eee; margin: 18px 0;"></div>
+            
+            <div style="margin-bottom: 18px;">
+                <h3 style="
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                    color: #1a1a1a;
+                ">Информация о доставке</h3>
+                <p style="font-size: 14px; color: #555; margin-bottom: 8px;">
+                    • Бесплатная доставка при заказе от 3000 ₽
+                </p>
+                <p style="font-size: 14px; color: #555;">
+                    • Доставка в день заказа возможна при оформлении до 14:00
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Адаптивность для мобилок -->
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .container > div:first-child h1 {
+            font-size: 24px !important;
+        }
+    }
+</style>
+<script>
+    // Получаем сохраненные данные из localStorage
+    const savedAddress = localStorage.getItem('deliveryAddress');
+    const savedLatitude = localStorage.getItem('deliveryLatitude');
+    const savedLongitude = localStorage.getItem('deliveryLongitude');
+    
+    // Если есть сохраненные данные, обновляем скрытые поля формы
+    if (savedAddress) {
+        document.querySelector('input[name="address"]').value = savedAddress;
+        document.querySelector('input[name="latitude"]').value = savedLatitude;
+        document.querySelector('input[name="longitude"]').value = savedLongitude;
+        
+        // Также обновляем отображаемый адрес
+        const addressDisplay = document.querySelector('.delivery-address p');
+        if (addressDisplay) {
+            addressDisplay.textContent = savedAddress;
+        }
+    }
+</script>
+<script src="{% static 'blog/js/delivery.js' %}"></script>
+{% endblock %}
