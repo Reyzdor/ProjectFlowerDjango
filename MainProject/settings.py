@@ -31,6 +31,7 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_SAVE_EVERY_REQUEST = True  # Важно!
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+<<<<<<< HEAD
 # LOGGING = {
 #     'version': 1,
 #     'handlers': {
@@ -46,6 +47,23 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 #         }
 #     }
 # }
+=======
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        }
+    }
+}
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 
 ALLOWED_HOSTS = []
 

@@ -1,6 +1,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import json
+=======
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -10,6 +13,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from blog.models import Category, Flowers, Basket, Order, OrderTime
 from django.contrib.auth.decorators import login_required  
+<<<<<<< HEAD
 from django.views.decorators.csrf import csrf_exempt
 =======
 from django.shortcuts import render
@@ -36,6 +40,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.models import User
 from blog.models import Category, Flowers
 >>>>>>> bf0b456 (Commit: +Login +Reg)
+=======
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 
 def index(request):
     categories = Category.objects.all()
@@ -149,10 +155,18 @@ def logout(request):
 def basket(request):
     if not request.user.is_authenticated:
         return redirect('login')
+<<<<<<< HEAD
 
     address = request.session.get('delivery_address', 'Адрес не указан')
     latitude = request.session.get('delivery_latitude', '')
     longitude = request.session.get('delivery_longitude', '')
+=======
+    
+    request.session['delivery_address'] = "Улица Пушкина, дом 42"
+    request.session['delivery_latitude'] = "55.123456"
+    request.session['delivery_longitude'] = "37.123456"
+    request.session.modified = True
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 
     user = request.user
     basket_items = Basket.objects.filter(user=user)
@@ -271,6 +285,7 @@ def remove_from_basket(request, item_id):
 
 @login_required
 def delivery_view(request):
+<<<<<<< HEAD
     address = request.session.get('delivery_address', 'Адрес не указан')
     latitude = request.session.get('delivery_latitude', '')
     longitude = request.session.get('delivery_longitude', '')
@@ -305,10 +320,50 @@ def order_success(request, order_id):
     except Exception as e:
         print(f"Ошибка в order_success: {str(e)}")
         raise Http404("Произошла ошибка при отображении заказа")
+=======
+    if request.method == 'POST':
+        # Получаем данные из формы корзины
+        address = request.POST.get('address', 'ул. Александра Пушкина, 42')
+        latitude = request.POST.get('latitude', '')
+        longitude = request.POST.get('longitude', '')
+        
+        # Собираем товары из корзины
+        basket_items = []
+        for key, value in request.POST.items():
+            if key.startswith('product_'):
+                product_id = key.replace('product_', '')
+                # Здесь вам нужно получить продукт из базы данных
+                # и добавить в basket_items
+                
+        context = {
+            'address': address,
+            'latitude': latitude,
+            'longitude': longitude,
+            'basket_items': basket_items,
+            'total_price': request.session.get('total_price', 0)
+        }
+        return render(request, 'blog/delivery.html', context)
+    else:
+        # Если зашли напрямую без выбора адреса
+        return redirect('basket')  # Перенаправляем обратно в корзин
+    
+@login_required
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order_items = OrderTime.objects.filter(order=order)
+    
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+    return render(request, 'blog/order_success.html', context)
+
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
     
 @login_required
 def process_delivery(request):
     if request.method == 'POST':
+<<<<<<< HEAD
         try:
             address = request.POST.get('address', '').strip()
             latitude = request.POST.get('latitude', '').strip()
@@ -389,6 +444,133 @@ def complete_order(request):
         }
 
         order = Order.objects.create(**order_data)
+=======
+        address = request.session.get('delivery_address')
+        if not address:
+            messages.error(request, 'Адрес доставки не указан')
+            return redirect('basket')
+        
+        try:
+            # Проверка обязательных полей
+            required_fields = {
+                'fullname': 'ФИО',
+                'email': 'Email',
+                'phone': 'Телефон', 
+                'delivery_time': 'Время доставки',
+                'address': 'Адрес'
+            }
+            
+            errors = []
+            for field, name in required_fields.items():
+                if not request.POST.get(field):
+                    errors.append(f"Поле '{name}' обязательно для заполнения")
+            
+            if errors:
+                messages.error(request, '\n'.join(errors))
+                return redirect('delivery')
+
+            # Сохранение данных в сессии
+            request.session['delivery_data'] = {
+                'address': request.POST['address'],
+                'latitude': request.POST.get('latitude', ''),
+                'longitude': request.POST.get('longitude', ''),
+                'fullname': request.POST['fullname'],
+                'email': request.POST['email'],
+                'phone': request.POST['phone'],
+                'delivery_time': request.POST['delivery_time'],
+                'comment': request.POST.get('comment', '')
+            }
+            
+            # Принудительное сохранение сессии
+            request.session.modified = True
+            request.session.save()
+            
+            print("Данные сессии установлены:", request.session['delivery_data'])
+            
+            # Проверка корзины
+            basket_items = Basket.objects.filter(user=request.user)
+            if not basket_items.exists():
+                messages.error(request, 'Ваша корзина пуста')
+                return redirect('basket')
+            
+            print("Перенаправление на complete_order")
+            return HttpResponseRedirect(reverse('complete_order'))
+            
+        except Exception as e:
+            print(f"Ошибка в process_delivery: {str(e)}")
+            messages.error(request, 'Ошибка обработки данных')
+            return redirect('delivery')
+    
+    return redirect('delivery')
+
+@login_required
+def complete_order(request):
+    print("\n=== START complete_order ===")
+    print(f"Session ID: {request.session.session_key}")
+    print("All session data:", dict(request.session))
+    
+    # Проверка данных доставки в сессии
+    if 'delivery_data' not in request.session:
+        error_msg = "ОШИБКА: Нет данных доставки в сессии!"
+        print(error_msg)
+        messages.error(request, 'Данные доставки не найдены. Пожалуйста, заполните форму еще раз.')
+        return redirect('delivery')
+
+    try:
+        delivery_data = request.session['delivery_data']
+        print("\nDelivery data from session:", delivery_data)
+        
+        # Получаем товары из корзины
+        basket_items = Basket.objects.filter(user=request.user).select_related('product')
+        if not basket_items.exists():
+            error_msg = "ОШИБКА: Корзина пуста!"
+            print(error_msg)
+            messages.error(request, 'Ваша корзина пуста')
+            return redirect('basket')
+        
+        print(f"\nBasket items ({basket_items.count()}):")
+        for item in basket_items:
+            print(f"- {item.product.title} x {item.quantity}")
+
+        # Проверка остатков товаров
+        out_of_stock = []
+        for item in basket_items:
+            if item.quantity > item.product.stock:
+                out_of_stock.append({
+                    'product': item.product.title,
+                    'requested': item.quantity,
+                    'available': item.product.stock
+                })
+
+        if out_of_stock:
+            error_msg = "ОШИБКА: Недостаточно товаров на складе!"
+            print(error_msg)
+            for item in out_of_stock:
+                print(f"- {item['product']}: запрошено {item['requested']}, доступно {item['available']}")
+                messages.error(request, 
+                    f'Недостаточно товара "{item["product"]}" на складе (доступно: {item["available"]})')
+            return redirect('basket')
+
+        # Создание заказа
+        total_amount = sum(item.product.price * item.quantity for item in basket_items)
+        print(f"\nCreating order with total amount: {total_amount}")
+        
+        order = Order.objects.create(
+            user=request.user,
+            address=delivery_data['address'],
+            customer_name=delivery_data['fullname'],
+            phone=delivery_data['phone'],
+            email=delivery_data['email'],
+            delivery_time=delivery_data['delivery_time'],
+            comment=delivery_data.get('comment', ''),
+            total_amount=total_amount,
+            status_order='processing'
+        )
+        print(f"Order created - ID: {order.id}")
+
+        # Создание позиций заказа и обновление остатков
+        print("\nCreating order items:")
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
         for item in basket_items:
             OrderTime.objects.create(
                 order=order,
@@ -398,6 +580,7 @@ def complete_order(request):
             )
             item.product.stock -= item.quantity
             item.product.save()
+<<<<<<< HEAD
 
         Basket.objects.filter(user=request.user).delete()
         del request.session['delivery_data']
@@ -450,3 +633,38 @@ def save_delivery_data(request):
 =======
     return redirect('login')
 >>>>>>> 8d08e9a (Commit: +Update code index.html and flower_detail.html)
+=======
+            print(f"- Added {item.product.title} x {item.quantity}")
+
+        # Очистка корзины
+        basket_items.delete()
+        print("Basket cleared")
+
+        # Очистка сессии
+        del request.session['delivery_data']
+        request.session.modified = True
+        print("Delivery data removed from session")
+
+        print(f"\nRedirecting to order_success with order_id: {order.id}")
+        return redirect('order_success', order_id=order.id)
+
+    except KeyError as e:
+        error_msg = f"ОШИБКА: Отсутствует обязательное поле в данных доставки - {str(e)}"
+        print(error_msg)
+        messages.error(request, 'Ошибка в данных доставки. Пожалуйста, заполните форму еще раз.')
+        return redirect('delivery')
+
+    except IntegrityError as e:
+        error_msg = f"ОШИБКА ЦЕЛОСТНОСТИ ДАННЫХ: {str(e)}"
+        print(error_msg)
+        messages.error(request, 'Ошибка при создании заказа. Пожалуйста, попробуйте еще раз.')
+        return redirect('delivery')
+
+    except Exception as e:
+        error_msg = f"НЕОЖИДАННАЯ ОШИБКА: {str(e)}"
+        print(error_msg)
+        import traceback
+        traceback.print_exc()
+        messages.error(request, 'Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.')
+        return redirect('delivery')
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)

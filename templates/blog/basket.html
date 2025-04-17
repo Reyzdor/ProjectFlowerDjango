@@ -5,17 +5,30 @@
 <<<<<<< HEAD
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container" style="padding-bottom: 180px; padding-top: 0;">
+<<<<<<< HEAD
     <div style="margin-top: 0;">
         <div style="margin-bottom: 20px; margin-left: 20px;">
             <div style="margin-bottom: 20px;">
                 <h1 class="mb-0" style="margin-bottom: 10px !important;">Ваша корзина</h1>
                 <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto;">
+=======
+    <div style="margin-top: -40px;">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-auto">
+                <h1 class="mb-0" style="margin-bottom: 5px !important;">Ваша корзина</h1>
+            </div>
+            <div class="col-auto">
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="margin-top: 5px;">
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
                     ← Продолжить покупки
                 </a>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 
     {% if basket_items %}
     <div class="basket-container" style="margin-top: 30px !important;"> 
@@ -80,6 +93,7 @@
     <div class="alert alert-secondary d-none d-md-block">
         <small>DEBUG: Session cart = {{ request.session.cart }}</small>
     </div>
+<<<<<<< HEAD
 
     {% if basket_items %}
     <div class="table-responsive">
@@ -159,6 +173,8 @@
 >>>>>>> 3741d9c (Update HTML + flower_detail + interface)
         </div>
     </div>
+=======
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
     {% else %}
     <div class="text-center py-5">
 <<<<<<< HEAD
@@ -176,6 +192,7 @@
         
         <div id="map" style="width:100%;height:400px;margin:15px 0;border:1px solid #ddd;"></div>
         
+<<<<<<< HEAD
         <form id="deliveryForm" method="post" action="{% url 'process_delivery' %}" style="display:flex;flex-direction:column;gap:20px;">
             {% csrf_token %}
             <input 
@@ -186,13 +203,24 @@
                 readonly 
                 required 
                 style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;font-size:16px;">
+=======
+        <form id="deliveryForm" method="post" action="{% url 'delivery' %}">
+            {% csrf_token %}
+            <input type="text" id="deliveryAddress" name="address" placeholder="Кликните на карте" 
+                   style="width:100%;padding:10px;margin-bottom:15px;border:1px solid #ddd;" readonly required>
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
             
             {% for item in basket_items %}
             <input type="hidden" name="product_{{ item.product.id }}" value="{{ item.quantity }}">
+<<<<<<< HEAD
             {% endfor %}
             
+=======
+             {% endfor %}
+
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
             <div style="display:flex;gap:10px;">
                 <button type="button" id="closeModal" style="flex:1;padding:10px;background:#ddd;border:none;border-radius:5px;">
                     Отмена
@@ -202,6 +230,7 @@
                 </button>
             </div>
         </form>
+<<<<<<< HEAD
         
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <link rel="stylesheet" href="{% static 'blog/css/basket.css' %}">
@@ -221,6 +250,14 @@
         const closeBtn = document.getElementById('closeModal');
         const deliveryForm = document.getElementById('deliveryForm');
 =======
+=======
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
     // Управление модальным окном
     const modal = document.getElementById('deliveryModal');
     const openBtn = document.getElementById('openDeliveryModal');
@@ -241,7 +278,11 @@
     let map, marker;
     
     async function getAddress(lat, lng) {
+<<<<<<< HEAD
         const API_KEY = ''
+=======
+        const API_KEY = '';
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
         const response = await fetch(
             `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=${API_KEY}`
         );
@@ -257,6 +298,7 @@
 
         map = L.map('map').setView([55.751574, 37.573856], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+<<<<<<< HEAD
 >>>>>>> d982e09
         
         let map, marker;
@@ -344,11 +386,27 @@
     
         function updateMarker(lat, lng, address) {
             if (marker) map.removeLayer(marker);
+=======
+        
+        map.on('click', async function(e) {
+            const { lat, lng } = e.latlng;
+            document.getElementById('deliveryAddress').value = "Определяем адрес...";
+            
+            const address = await getAddress(lat, lng);
+            
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            document.getElementById('deliveryAddress').value = address;
+            
+            if (marker) map.removeLayer(marker);
+            
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
             marker = L.marker([lat, lng], {
                 draggable: true
             }).addTo(map)
             .bindPopup(`<b>Адрес доставки:</b><br>${address}`)
             .openPopup();
+<<<<<<< HEAD
         }
     
         deliveryForm.addEventListener('submit', async function(e) {
@@ -539,6 +597,19 @@
 </script>
 <script src="{% static 'blog/js/detail.js' %}"></script>
 <style>
+=======
+        });
+        
+        marker = L.marker([55.751574, 37.573856], {
+            draggable: true
+        }).addTo(map)
+        .bindPopup("<b>Укажите место доставки</b>")
+        .openPopup();
+    }
+</script>
+<style>
+    /* Ваши стили остаются без изменений */
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
     .container h1 {
         margin-bottom: 0px !important;
         display: block !important;

@@ -2,7 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+<<<<<<< HEAD
 from django.utils.text import slugify  # Импорт slugify для автоматической генерации slug
+=======
+>>>>>>> 7740582 (Commit: +API Geoapify + OpenStreetMaps new 2 html + address)
 
 class Category(models.Model):
     title = models.CharField(
