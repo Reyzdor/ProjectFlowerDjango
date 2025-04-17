@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<<<<<<< HEAD
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container" style="padding-bottom: 180px; padding-top: 0;">
     <div style="margin-top: 0;">
@@ -71,10 +72,96 @@
                     <button id="openDeliveryModal" class="btn-pink">Оформить заказ</button>
                 </div>
             </div>
+=======
+<div class="container my-5">
+    <h2 class="mb-4">Ваша корзина</h2>
+    
+    <!-- Отладочная информация (можно убрать после проверки) -->
+    <div class="alert alert-secondary d-none d-md-block">
+        <small>DEBUG: Session cart = {{ request.session.cart }}</small>
+    </div>
+
+    {% if basket_items %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 40%">Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in basket_items %}
+                <tr class="align-middle">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            {% if item.flower.image %}
+                            <img src="{{ item.flower.image.url }}" 
+                                 class="img-thumbnail me-3"
+                                 alt="{{ item.flower.title }}" 
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                            {% else %}
+                            <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center" 
+                                 style="width: 80px; height: 80px; background: #f8f9fa;">
+                                <i class="bi bi-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <h5 class="mb-1">{{ item.flower.title }}</h5>
+                                <small class="text-muted">ID: {{ item.flower.id }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="fw-bold">{{ item.flower.price }} ₽</td>
+                    <td>
+                        <form method="post" action="{% url 'update_basket' item.flower.id %}" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <input type="number" 
+                                   name="quantity" 
+                                   value="{{ item.quantity }}" 
+                                   min="1" 
+                                   class="form-control form-control-sm me-2" 
+                                   style="width: 70px;">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </form>
+                    </td>
+                    <td class="fw-bold text-nowrap">{{ item.total_price }} ₽</td>
+                    <td>
+                        <a href="{% url 'remove_from_basket' item.flower.id %}" 
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Удалить этот товар из корзины?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-group-divider">
+                <tr>
+                    <th colspan="3" class="text-end">Итого:</th>
+                    <th colspan="2" class="h4 text-primary">{{ total }} ₽</th>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'index' %}" class="btn btn-lg btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Продолжить покупки
+            </a>
+            <a href="#" class="btn btn-lg btn-success">
+                Оформить заказ <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
         </div>
     </div>
     {% else %}
     <div class="text-center py-5">
+<<<<<<< HEAD
         <h2>Ваша корзина пуста</h2>
         <p>Добавьте товары из каталога</p>
         <a href="{% url 'index' %}" class="btn-pink">← Вернуться к покупкам</a>
@@ -434,3 +521,42 @@
     }
 </style>
 {% endblock %}
+=======
+        <div class="mb-4">
+            <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+        </div>
+        <h3 class="mb-3">Ваша корзина пуста</h3>
+        <p class="lead mb-4">Выберите товары в каталоге, чтобы продолжить</p>
+        <a href="{% url 'index' %}" class="btn btn-primary btn-lg px-4">
+            <i class="bi bi-shop me-2"></i>В каталог
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Подтверждение удаления
+    document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if(!confirm('Точно удалить товар из корзины?')) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // Анимация при обновлении количества
+    document.querySelectorAll('input[name="quantity"]').forEach(input => {
+        input.addEventListener('change', function() {
+            this.closest('tr').classList.add('table-warning');
+            setTimeout(() => {
+                this.closest('tr').classList.remove('table-warning');
+            }, 1000);
+        });
+    });
+});
+</script>
+{% endblock %}
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)

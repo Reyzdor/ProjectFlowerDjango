@@ -64,12 +64,18 @@ class Flowers(models.Model):
         upload_to='uploads/',
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
     image_two = models.ImageField(
         verbose_name='вторая картинка',
         upload_to='uploads/',
     )
+<<<<<<< HEAD
 =======
 >>>>>>> ad7377b (Update HTML + images + interface)
+=======
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
 
     def __str__(self):
         return self.title
@@ -140,13 +146,28 @@ class Basket(models.Model):
         Flowers,
         on_delete=models.CASCADE,   
     )
+<<<<<<< HEAD
     quantity = models.PositiveIntegerField(
         default=1,
         verbose_name='количество'
+=======
+    stock_basket = models.PositiveIntegerField(
+        default=0,
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
     )
     created_timestamp = models.DateTimeField(
         auto_now_add=True,
     )
+<<<<<<< HEAD
+=======
+
+    def __str__(self):
+        return f"Корзина для {self.user} | Товар {self.product}"
+    
+    class Meta:
+        verbose_name = 'корзина'
+
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
 
     def __str__(self):
         return f"Корзина для {self.user} | Товар {self.product}"

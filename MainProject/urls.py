@@ -1,5 +1,6 @@
 from django.contrib import admin
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,17 +28,24 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 =======
 from django.urls import path, include
+=======
+from django.urls import path
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
 from django.conf import settings
 from django.conf.urls.static import static
 
-from blog.views import index
-from blog import views
+from blog.views import index, flower_id
 
-urlpatterns = [      
+urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 >>>>>>> 02e56ac (Commit: Update HTML)
+=======
+    path('flower/<int:flower_id>/', flower_id, name='flower_detail'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)

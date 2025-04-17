@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import json
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
@@ -21,6 +22,12 @@ def logout_view(request):
     messages.get_messages(request).used = True  
     logout(request)
     return redirect('blog/login.html')
+=======
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.conf import settings
+from blog.models import User, Category, Flowers, Order, OrderTime
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
 
 def index(request):
     categories = Category.objects.all()
@@ -28,20 +35,39 @@ def index(request):
     flowers = Flowers.objects.all()[:6]  
 =======
     flowers = Flowers.objects.all()
+<<<<<<< HEAD
 
 >>>>>>> 28078ce (+Js, +btsrp, +html)
+=======
+    
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
     context = {
-        'flowers': flowers,
         'categories': categories,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         'flowers': flowers,
 =======
 >>>>>>> 28078ce (+Js, +btsrp, +html)
 =======
+=======
+        'flowers': flowers,
+    }
+    return render(request, 'blog/index.html', context)
+
+def flower_id(request, flower_id):
+    flower = get_object_or_404(Flowers, pk=flower_id)
+    additional_flower = Flowers.objects.exclude(id=flower.id).order_by('?').first()
+    other_flowers = Flowers.objects.exclude(id=flower.id).order_by('?')[:8]
+    context = {
+        'flower': flower,
+        'additional_flower': additional_flower,
+        'other_flowers': other_flowers,
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
         'SETTINGS': settings,
 >>>>>>> 02e56ac (Commit: Update HTML)
     }
+<<<<<<< HEAD
     return render(request, 'blog/index.html', context)
 
 <<<<<<< HEAD
@@ -398,3 +424,6 @@ def save_delivery_data(request):
     )
 
 >>>>>>> 02e56ac (Commit: Update HTML)
+=======
+    return render(request, 'blog/flower_detail.html', context)
+>>>>>>> 3741d9c (Update HTML + flower_detail + interface)
