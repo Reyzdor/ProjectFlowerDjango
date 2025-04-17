@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список категорий</title>
+</head>
+<body>
+    <h1>Категоии</h1>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.name }}</li>  <!-- Предположим, что у вас есть поле name в модели Category -->
+        {% empty %}
+            <li>Категории не найдены.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
