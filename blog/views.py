@@ -18,10 +18,19 @@ def logout_view(request):
 
 def index(request):
     categories = Category.objects.all()
+<<<<<<< HEAD
     flowers = Flowers.objects.all()[:6]  
+=======
+    flowers = Flowers.objects.all()
+
+>>>>>>> 28078ce (+Js, +btsrp, +html)
     context = {
-        'categories': categories,
         'flowers': flowers,
+        'categories': categories,
+<<<<<<< HEAD
+        'flowers': flowers,
+=======
+>>>>>>> 28078ce (+Js, +btsrp, +html)
     }
     return render(request, 'blog/index.html', context)
 
