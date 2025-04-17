@@ -10,9 +10,15 @@ __pycache__/
 .DS_Store
 staticfiles
 <<<<<<< HEAD
+<<<<<<< HEAD
 /staticfiles/ 
 static/bootstrap-5.3.3-dist
 /static/bootstrap-5.3.3-dist/
 =======
 /staticfiles/ 
 >>>>>>> cc3b587 (Commit: delete staticfiles)
+=======
+/staticfiles/ 
+static/bootstrap-5.3.3-dist
+/static/bootstrap-5.3.3-dist/
+>>>>>>> ad7377b (Update HTML + images + interface)

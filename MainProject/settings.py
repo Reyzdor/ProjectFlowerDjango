@@ -142,12 +142,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 =======
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 >>>>>>> 02e56ac (Commit: Update HTML)
+=======
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+>>>>>>> ad7377b (Update HTML + images + interface)
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'

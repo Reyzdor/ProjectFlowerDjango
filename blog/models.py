@@ -63,10 +63,13 @@ class Flowers(models.Model):
         verbose_name='картинки',
         upload_to='uploads/',
     )
+<<<<<<< HEAD
     image_two = models.ImageField(
         verbose_name='вторая картинка',
         upload_to='uploads/',
     )
+=======
+>>>>>>> ad7377b (Update HTML + images + interface)
 
     def __str__(self):
         return self.title

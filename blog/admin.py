@@ -18,7 +18,10 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderTimeAdmin(admin.ModelAdmin):
     ...
 
+<<<<<<< HEAD
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
     ...
 
+=======
+>>>>>>> ad7377b (Update HTML + images + interface)
