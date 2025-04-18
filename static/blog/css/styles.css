@@ -1,46 +1,23 @@
 @font-face {
-    font-family: 'Abhaya Libre';
+    font-family: 'G';
     src: url('{% static "fonts/AbhayaLibre-Regular.ttf" %}') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 body {
-    font-family: 'Abhaya Libre', sans-serif;
+    font-family: 'Georgia', serif; /* Было: 'Abhaya Libre' */
     color: var(--text-color);
 }
 
-.flower-1 {
-    transform: scale(0.7); /* 70% от оригинального размера */
-    top: 15%;
-    left: 10%;
-}
-
-.flower-2 {
-    transform: scale(0.5); /* 50% от оригинального размера */
-    top: 65%;
-    left: 85%;
-}
-
-.flower-3 {
-    transform: scale(0.6); /* 60% от оригинального размера */
-    top: 40%;
-    left: 75%;
-}
-
-.floating-flower {
-    transition: all 0.5s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-}
-
 .site-title {
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Georgia', serif; /* Было: 'Great Vibes' */
 }
 
 .image-row {
     display: flex;
     justify-content: space-between;
-    gap: 20px; /* Равные отступы между картинками */
+    gap: 20px;
 }
 
 .category-image-link:hover {
@@ -49,7 +26,7 @@ body {
 }
 
 .category-card p {
-    margin-top: 18px; /* Подпись ниже на 8px */
-    font-family: 'AbhayaLibre-Bold', sans-serif;
+    margin-top: 18px;
+    font-family: 'Georgia', serif; /* Было: 'AbhayaLibre-Bold' */
     font-size: 1rem;
 }

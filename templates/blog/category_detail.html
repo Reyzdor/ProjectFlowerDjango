@@ -10,14 +10,16 @@
         <link rel="stylesheet" href="{% static 'blog/css/c_detail.css' %}">
         <link rel="stylesheet" href="{% static 'blog/css/category.css' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, a, span, div, li, ul, nav, button, input, textarea, select, option {
+                font-family: Georgia, serif !important;
+            }
+        </style>
     </head>
     <body>
         <!-- Шапка -->
         <header class="px-3">
             <div class="container text-center position-relative">
-                <div class="pop-up-container">
-                    <img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up">
-                </div>
                 <a href="{% url 'index' %}" class="text-decoration-none">
                     <h1 class="m-0 site-title">CUSTOM BLOOMS</h1>
                 </a>
@@ -25,7 +27,7 @@
             </div>
         </header>
     </body>
-        
+    
         <!-- Навигация -->
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
@@ -60,7 +62,7 @@
                 </div>
             </div>
         </nav>
-        
+
         <!-- Список цветов -->
         <main class="container my-5">
             <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -99,71 +101,6 @@
         <p>&copy; CUSTOM BLOOMS</p>
     </footer>
     
-    <!-- Скрипты -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById("myForm").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            console.log("Форма не отправлена!");
-        });
-     
-        document.addEventListener('DOMContentLoaded', function() {
-            const popUp = document.createElement('img');
-            popUp.src = "{% static 'blog/decor_images/pop-up.png' %}";
-            popUp.className = 'pop-up';
-            
-            const title = document.querySelector('.site-title');
-            
-            const text = title.textContent;
-            const lastSIndex = text.lastIndexOf('S');
-            
-            if (lastSIndex !== -1) {
-                const tempSpan = document.createElement('span');
-                tempSpan.textContent = text.substring(0, lastSIndex + 1);
-                tempSpan.style.visibility = 'hidden';
-                tempSpan.style.position = 'absolute';
-                tempSpan.style.fontFamily = getComputedStyle(title).fontFamily;
-                tempSpan.style.fontSize = getComputedStyle(title).fontSize;
-                tempSpan.style.fontWeight = getComputedStyle(title).fontWeight;
-                tempSpan.style.letterSpacing = getComputedStyle(title).letterSpacing;
-                
-                title.parentNode.insertBefore(tempSpan, title.nextSibling);
-                
-                const rect = tempSpan.getBoundingClientRect();
-                const titleRect = title.getBoundingClientRect();
-                
-                popUp.style.left = `${rect.right - titleRect.left - 20}px`;
-                popUp.style.top = `${rect.top - titleRect.top - 16}px`;
-                
-                tempSpan.remove();
-            } else {
-                popUp.style.left = 'calc(100% - 60px)';
-                popUp.style.top = '-16px';
-            }
-            
-            title.parentNode.appendChild(popUp);
-            
-            setTimeout(() => {
-                popUp.classList.add('show');
-            }, 500);
-            
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            
-        });
-    </script>
     <script src="{% static 'blog/js/c_detail.js' %}"></script>
 </body>
 </html>

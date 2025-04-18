@@ -1,14 +1,17 @@
 {% extends 'blog/index.html' %}
 {% load static %}
 
+{% block navigation %}{% endblock %}
+{% block why_we_different %}{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container" style="padding-bottom: 180px; padding-top: 0;">
-    <div style="margin-top: 0;">
-        <div style="margin-bottom: 20px; margin-left: 20px;">
-            <div style="margin-bottom: 20px;">
-                <h1 class="mb-0" style="margin-bottom: 10px !important;">Ваша корзина</h1>
-                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto;">
+    <div style="margin-top: 10;">
+        <div style="margin-bottom: 20px; margin-left: -830px;">
+            <div style="margin-bottom: 100px;">
+                <h1 class="mb-0" style="margin-bottom: 20px !important; ">Ваша корзина</h1>
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto; margin-left: -40px; margin-bottom: 10px;">
                     ← Продолжить покупки
                 </a>
             </div>
@@ -17,12 +20,11 @@
     
 
     {% if basket_items %}
-    <div class="basket-container" style="margin-top: 30px !important;"> 
+    <div class="basket-container" style="margin-top: -50px !important;"> 
         <div class="basket-grid">
             {% for item in basket_items %}
             <div class="basket-item">
                 <div class="basket-img">
-                    <img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up">
                     <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
                 </div>
                 <div class="basket-info">
@@ -117,7 +119,6 @@
         </form>
         
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        <link rel="stylesheet" href="{% static 'blog/css/basket.css' %}">
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script>
             
@@ -275,7 +276,6 @@
             });
 
 </script>
-<script src="{% static 'blog/js/detail.js' %}"></script>
 <style>
     .container h1 {
         margin-bottom: 0px !important;
@@ -365,6 +365,8 @@
         max-height: 100%;
         object-fit: contain;
         border-radius: 5px;
+        transform: none !important; 
+        transition: none !important;
     }
     .basket-info h3 {
         margin-bottom: 5px;
@@ -411,6 +413,9 @@
     }
     .btn-pink:hover {
         background: #ff1493;
+    }
+    body, h1, h2, h3, p, button {
+        font-family: 'Georgia', sans-serif; /* Или любой другой шрифт */
     }
     @media (max-width: 1024px) {
         .basket-grid {

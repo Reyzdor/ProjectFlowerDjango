@@ -15,23 +15,6 @@
             --bg-color: #FFF5FB;
             --text-color: #5A2D50;
         }
-        
-        @font-face {
-            font-family: 'AbhayaLibre-Bold';
-            src: url('{% static "fonts/AbhayaLibre-Bold.ttf" %}') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }        
-        
-        .site-title {
-            font-family: 'AbhayaLibre-Bold', sans-serif !important;
-            font-size: 1rem;
-            font-weight: 200;
-            letter-spacing: 1px;
-            color: var(--text-color);
-        }
-                
-        
         .category-link {
             text-decoration: none;
             color: inherit;
@@ -39,7 +22,21 @@
             align-items: center;
             gap: 8px;
         }
-    
+        .site-title {
+            font-family: 'Georgia', sans-serif;
+            font-weight: 700;
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #FF6EC7, #FF9FDF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+            padding-right: 50px;
+            margin-bottom: 10px;
+        }        
         .navbar-nav {
             flex-wrap: nowrap;
         }
@@ -97,11 +94,14 @@
         .navbar {
             background-color: white !important;
             box-shadow: 0 2px 10px rgba(255, 159, 223, 0.2);
+            padding: 13px 0;
         }
         
         .nav-link {
             color: var(--text-color) !important;
-            font-weight: 500;
+            font-weight: lighter;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
         }
         
         .card {
@@ -430,6 +430,9 @@
         .review-group:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        img:hover {
+            transform: scale(1.1);
         }        
         
     </style>
@@ -445,28 +448,26 @@
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white; padding-top: -5px;">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="color: var(--main-color) !important;">
+            <a class="navbar-brand" href="#">
                 <i class="bi bi-flower1"></i> Цветы
             </a>
-        
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto d-flex flex-row gap-3">
-                    {% for category in categories %}
+                <!-- Вывод остальных категорий -->
+                <ul class="navbar-nav me-auto d-flex flex-row">
+                    {% for cat in categories %}
                     <li class="nav-item">
-                        <a class="nav-link category-link" href="{% url 'category_detail' category.slug %}">
-                            <i class="bi bi-tag"></i> {{ category.title }}
+                        <a class="nav-link category-link" href="{% url 'category_detail' cat.slug %}">
+                            <i class="bi bi-tag"></i> {{ cat.title }}
                         </a>
                     </li>
                     {% endfor %}
                 </ul>
-
+    
                 <div class="ms-auto d-flex align-items-center gap">
                     {% if user.is_authenticated %}
                         <span class="navbar-text">Привет, {{ user.username }}!</span>
@@ -481,7 +482,6 @@
             </div>
         </div>
     </nav>
-      
 
     <main class="container-fluid my-5 p-0">
         {% if request.resolver_match.url_name == "index" %}
@@ -651,7 +651,7 @@
         </div>
     </div>
 
-    
+    {% block why_we_different %}
     <hr class="divider">
     <div style="text-align: center; font-family: 'Georgia', serif; font-size: 3rem; color: #5a2d50; padding: 20px;">
         Почему Мы Разные
@@ -684,61 +684,13 @@
             </div>
         </div>
     </div>
-    
-    <hr class="divider">
+    {% endblock %}
 
-
-    <section class="review-section" style="margin: 50px 0; text-align: center;">
-        <!-- Первый отзыв -->
-        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-right: 460px;">
-            <img src="{% static 'images/uploads/47.jpg' %}" alt="Отзыв 1 Левый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
-            <img src="{% static 'images/uploads/48.jpg' %}" alt="Отзыв 1 Центр"
-                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
-            <img src="{% static 'images/uploads/49.jpg' %}" alt="Отзыв 1 Правый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
-        </div>
-    
-        <!-- Второй отзыв -->
-        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-left: -180px;">
-            <img src="{% static 'images/uploads/50.jpg' %}" alt="Отзыв 2 Левый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
-            <img src="{% static 'images/uploads/51.jpg' %}" alt="Отзыв 2 Центр"
-                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
-            <img src="{% static 'images/uploads/52.jpg' %}" alt="Отзыв 2 Правый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
-        </div>
-    
-        <!-- Третий отзыв -->
-        <div class="review-group" style="display: inline-block; position: relative; margin-bottom: 80px; margin-left: 270px;">
-            <img src="{% static 'images/uploads/53.jpg' %}" alt="Отзыв 3 Левый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(-15deg); left: -40px; top: 10px;">
-            <img src="{% static 'images/uploads/54.jpg' %}" alt="Отзыв 3 Центр"
-                 style="width: 140px; height: 200px; object-fit: cover; border-radius: 8px; position: relative; z-index: 2; left: -10px;">
-            <img src="{% static 'images/uploads/55.jpg' %}" alt="Отзыв 3 Правый"
-                 style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; position: absolute; transform: rotate(15deg); left: 30px; top: 10px;">
-        </div>
-    </section>
-    
-    
-    
-    
-
-
-    {% comment %} <hr class="divider"> {% endcomment %}
-    
-    {% comment %} <section class="video-section" style="position: relative; width: 100%; height: auto; overflow: hidden; margin-top: -41px;">
-        <video autoplay loop muted playsinline style="width: 100%; max-width: 100%; height: auto; object-fit: cover; display: block; border-radius: 10px;">
-            <source src="{% static 'video/main2.mp4' %}" type="video/mp4">
-            Ваш браузер не поддерживает просмотр видео.
-        </video>
-        <div class="text-on-video" style="position: absolute; bottom: 20px; left: 20px; color: white; font-family: 'Georgia', sans-serif; font-size: 1.5rem; text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); z-index: 10;">
-        </div>
-    </section>
-
-    {% comment %} <footer class="text-white text-center p-3 mt-5">
+    <footer class="text-white text-center p-3 mt-5">
         <p class="m-0">&copy; CUSTOM BLOOMS</p>
-    </footer> {% endcomment %} 
+    </footer>
+
+
     
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
