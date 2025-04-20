@@ -1,6 +1,9 @@
 {% extends 'blog/index.html' %}
 {% load static %}
 
+{% block why_we_different %}{% endblock %}
+
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 
@@ -58,7 +61,6 @@ flex-wrap: wrap;
 padding: 0 15px;
 
 ">
-<!-- Левая колонка (форма заказа) -->
 <div style="
 background: white;
 border-radius: 10px;
@@ -84,122 +86,269 @@ max-width: 500px;
     color: #1a1a1a;
     ">Контактные данные</h2>
                 
-                <div style="margin-bottom: 18px;">
-                    <label for="fullname" style="
-                        display: block;
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 6px;
-                        color: #555;
-                    ">ФИО получателя*</label>
-                    <input type="text" id="fullname" name="fullname" required style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        font-size: 15px;
-                    ">
-                </div>
-                
-                <div style="margin-bottom: 18px;">
-                    <label for="email" style="
-                        display: block;
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 6px;
-                        color: #555;
-                    ">Email*</label>
-                    <input type="email" id="email" name="email" required style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        font-size: 15px;
-                    ">
-                </div>
-                
-                <div style="margin-bottom: 18px;">
-                    <label for="phone" style="
-                        display: block;
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 6px;
-                        color: #555;
-                    ">Телефон*</label>
-                    <input type="tel" id="phone" name="phone" required style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        font-size: 15px;
-                    ">
-                </div>
+    <div style="margin-bottom: 18px;">
+        <label for="fullname" style="
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        ">ФИО получателя*</label>
+        <input type="text" id="fullname" name="fullname" required style="
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        ">
+    </div>
+    
+    <div style="margin-bottom: 18px;">
+        <label for="email" style="
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        ">Email*</label>
+        <input type="email" id="email" name="email" required style="
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        ">
+    </div>
+    
+    <div style="margin-bottom: 18px;">
+        <label for="phone" style="
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        ">Телефон*</label>
+        <input type="tel" id="phone" name="phone" required style="
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        ">
+    </div>
 
-                <div style="margin-bottom: 18px;">
-                    <label for="delivery_time" style="
-                        display: block;
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 6px;
-                        color: #555;
-                    ">Время доставки*</label>
-                    <select id="delivery_time" name="delivery_time" required style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        font-size: 15px;
-                    ">
-                        <option value="">Выберите время</option>
-                        <option value="10:00-14:00">10:00-14:00</option>
-                        <option value="14:00-18:00">14:00-18:00</option>
-                        <option value="18:00-22:00">18:00-22:00</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 18px;">
-                    <label for="comment" style="
-                        display: block;
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 6px;
-                        color: #555;
-                    ">Комментарий к заказу</label>
-                    <textarea id="comment" name="comment" rows="2" style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        font-size: 15px;
-                        resize: vertical;
-                        min-height: 80px;
-                    "></textarea>
-                </div>
-
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    margin: 20px 0;
-                ">
-                    <input type="checkbox" id="agree" name="agree" required style="margin-right: 10px;">
-                    <label for="agree" style="font-size: 14px; color: #555;">
-                        Я согласен на обработку персональных данных
-                    </label>
-                </div>
-                
-                <button type="submit" style="
-                    background: #ff69b4;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    padding: 12px;
-                    font-size: 16px;
-                    font-weight: 500;
-                    cursor: pointer;
-                    width: 100%;
-                ">Подтвердить заказ</button>
-            </form>
+    <div style="margin-bottom: 18px;">
+        <label for="delivery_time" style="
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        ">Время доставки*</label>
+        <select id="delivery_time" name="delivery_time" required style="
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        ">
+            <option value="">Выберите время</option>
+            <option value="10:00-14:00">10:00-14:00</option>
+            <option value="14:00-18:00">14:00-18:00</option>
+            <option value="18:00-22:00">18:00-22:00</option>
+        </select>
+    </div>
+    
+    <!-- Новая секция: Способ оплаты -->
+    <h2 style="
+        font-size: 20px;
+        font-weight: 600;
+        margin: 25px 0 15px 0;
+        color: #1a1a1a;
+    ">Способ оплаты</h2>
+    
+    <div style="margin-bottom: 25px;">
+        <!-- Способы оплаты -->
+        <div class="payment-option">
+            <input type="radio" id="cash" name="payment_method" value="cash" checked>
+            <label for="cash">Наличными при получении</label>
         </div>
+        
+        <div class="payment-option">
+            <input type="radio" id="card" name="payment_method" value="card">
+            <label for="card">Картой онлайн</label>
+        </div>
+        
+        <!-- Блок данных карты -->
+        <div id="card-details" class="payment-details">
+            <div class="input-group">
+                <label>Номер карты</label>
+                <input type="text" placeholder="1234 5678 9012 3456" class="card-input">
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <div class="input-group" style="flex: 1;">
+                    <label>Срок действия</label>
+                    <input type="text" placeholder="MM/ГГ" class="card-input">
+                </div>
+                
+                <div class="input-group" style="flex: 1;">
+                    <label>CVV/CVC</label>
+                    <input type="text" placeholder="123" class="card-input">
+                </div>
+            </div>
+        </div>
+        
+        <div class="payment-option">
+            <input type="radio" id="qr" name="payment_method" value="qr">
+            <label for="qr">QR-код (СБП)</label>
+        </div>
+        
+        <!-- Блок QR-кода -->
+        <div id="qr-code" class="payment-details" style="text-align: center;">
+            <p class="qr-instruction">
+                Отсканируйте QR-код для оплаты через мобильное приложение вашего банка
+            </p>
+            <img src="{% static 'images\uploads\frame.png' %}"
+                 alt="QR-код для оплаты" 
+                 class="qr-image">
+            <p class="qr-note">
+                После оплаты заказ будет автоматически подтверждён
+            </p>
+        </div>
+    </div>
+
+    <style>
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .payment-option:hover {
+            background: #f5f5f5;
+        }
+        
+        .payment-option input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #5a2d50;
+        }
+        
+        .payment-option label {
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .payment-details {
+            display: none;
+            margin: 15px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #555;
+        }
+        
+        .card-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        
+        .card-icons {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .card-icons img {
+            height: 26px;
+            opacity: 0.8;
+        }
+        
+        .qr-instruction {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .qr-image {
+            width: 180px; /* или любой другой размер по твоему желанию */
+            border: 1px solid #eee;
+            transition: none !important; /* отключаем анимацию */
+            transform: none !important; /* отключаем трансформации */
+        }
+
+        .qr-image:hover {
+            transform: none !important; /* гарантируем, что при наведении ничего не изменится */
+        }
+        
+        .qr-note {
+            font-size: 13px;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+    
+    
+    <div style="margin-bottom: 18px;">
+        <label for="comment" style="
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        ">Комментарий к заказу</label>
+        <textarea id="comment" name="comment" rows="2" style="
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            resize: vertical;
+            min-height: 80px;
+        "></textarea>
+    </div>
+
+    <div style="
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+    ">
+        <input type="checkbox" id="agree" name="agree" required style="margin-right: 10px;">
+        <label for="agree" style="font-size: 14px; color: #555;">
+            Я согласен на обработку персональных данных
+        </label>
+    </div>
+    
+    <button type="submit" style="
+        background: #ff69b4;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+    ">Подтвердить заказ</button>
+</form>
+</div>
 
         <!-- Правая колонка (информация о заказе) -->
         <div style="
@@ -230,9 +379,7 @@ max-width: 500px;
             <link rel="stylesheet" href="{% static 'blog/css/delivery.css' %}">
             <div style="height: 1px; background-color: #eee; margin: 18px 0;"></div>
             
-            <div>
-                <img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up">
-            </div>
+
 
             <div style="margin-bottom: 18px;">
                 <h3 style="
@@ -319,5 +466,18 @@ max-width: 500px;
         }
     }
 </script>
-<script src="{% static 'blog/js/delivery.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+        const cardDetails = document.getElementById('card-details');
+        const qrCode = document.getElementById('qr-code');
+        
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                cardDetails.style.display = this.value === 'card' ? 'block' : 'none';
+                qrCode.style.display = this.value === 'qr' ? 'block' : 'none';
+            });
+        });
+    });
+    </script>
 {% endblock %}

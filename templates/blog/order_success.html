@@ -1,6 +1,8 @@
 {% extends 'blog/index.html' %}
 {%  load static %}
 
+{% block why_we_different %}{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container mt-4 mb-5">
@@ -22,7 +24,6 @@
                 <div class="col-md-6">
                     <div class="card mb-4">
                         <div class="card-header bg-light">
-                            <link rel="stylesheet" href="{% static 'blog/css/order_success.css' %}">
                             <h5 class="mb-0"><i class="fas fa-user me-2"></i>Контактные данные</h5>
                         </div>
                         <div class="card-body">
@@ -84,8 +85,6 @@
                 </div>
             </div>
             
-            <div><img src="{% static 'blog/decor_images/pop-up.png' %}" class="pop-up"></div>
-
 
             <div class="d-flex justify-content-between mt-4">
                 <a href="{% url 'index' %}" class="btn btn-outline-secondary">
@@ -121,5 +120,4 @@
         font-weight: 600;
     }
 </style>
-<script src="{% static 'blog/js/order_success.js' %}"></script>
 {% endblock %}

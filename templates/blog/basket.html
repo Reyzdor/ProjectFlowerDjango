@@ -1,26 +1,32 @@
 {% extends 'blog/index.html' %}
 {% load static %}
 
-{% block navigation %}{% endblock %}
 {% block why_we_different %}{% endblock %}
 
 {% block content %}
+<ul class="navbar-nav me-auto d-flex flex-row">
+    {% for cat in categories %}
+    <li class="nav-item">
+        <a class="nav-link category-link" href="{% url 'category_detail' cat.slug %}">
+            <i class="bi bi-tag"></i> {{ cat.title }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
 <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 <div class="container" style="padding-bottom: 180px; padding-top: 0;">
-    <div style="margin-top: 10;">
-        <div style="margin-bottom: 20px; margin-left: -830px;">
-            <div style="margin-bottom: 100px;">
-                <h1 class="mb-0" style="margin-bottom: 20px !important; ">Ваша корзина</h1>
-                <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto; margin-left: -40px; margin-bottom: 10px;">
-                    ← Продолжить покупки
-                </a>
-            </div>
+    <div style="margin-top: 10px;">
+        <div style="margin-bottom: 20px;">
+            <h1 class="mb-0" style="margin-bottom: 10px !important;">Ваша корзина</h1>
+            <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="display: inline-block; padding: 6px 12px; width: auto;">
+                ← Продолжить покупки
+            </a>
         </div>
     </div>
     
 
     {% if basket_items %}
-    <div class="basket-container" style="margin-top: -50px !important;"> 
+    <div class="basket-container"> 
         <div class="basket-grid">
             {% for item in basket_items %}
             <div class="basket-item">
@@ -274,16 +280,16 @@
                     return cookieValue;
                 }
             });
-
-</script>
+        </script>
 <style>
     .container h1 {
-        margin-bottom: 0px !important;
+        margin-bottom: 10px !important;
         display: block !important;
     }
     .container .btn-outline-secondary {
         margin-top: 10px !important;
         display: inline-block !important;
+        margin-left: 0 !important;
     }
     .basket-container {
         margin-top: 30px !important;
