@@ -4,7 +4,7 @@ from .models import Category, Flowers, Order, OrderTime, Basket
 class OrderTimeInline(admin.TabularInline):
     model = OrderTime
     extra = 0  
-    readonly_fields = ('get_total',) 
+    readonly_fields = ('get_total',)  
     
     def get_total(self, obj):
         return obj.get_total()
