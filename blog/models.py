@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from django.utils.text import slugify  # Импорт slugify для автоматической генерации slug
+from django.utils.text import slugify  
 
 class Category(models.Model):
     title = models.CharField(
