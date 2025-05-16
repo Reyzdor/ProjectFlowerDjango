@@ -16,11 +16,21 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('status_order', 'created_at')
     search_fields = ('customer_name', 'phone', 'email', 'address')
     inlines = [OrderTimeInline]
-    
+    readonly_fields = ('total_amount',)  # <- теперь поле нельзя редактировать руками
+
     def display_products(self, obj):
         items = OrderTime.objects.filter(order=obj)
         return ", ".join([f"{item.flower.title} ({item.quantity} шт.)" for item in items])
     display_products.short_description = 'Товары в заказе'
+
+class OrderTimeInline(admin.TabularInline):
+    model = OrderTime
+    extra = 0
+    readonly_fields = ('get_total', 'unit_price')  # запрет на редактирование цены
+
+    def get_total(self, obj):
+        return obj.get_total()
+    get_total.short_description = 'Сумма'
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

@@ -96,35 +96,41 @@ class Order(models.Model):
         return f"Заказ #{self.id} - {self.customer_name}"
 
 class OrderTime(models.Model):
-    order = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        verbose_name='заказ',
-    )
-    flower = models.ForeignKey(
-        Flowers,
-        on_delete=models.CASCADE,
-        verbose_name='цветок',
-    )
-    quantity = models.DecimalField(
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='заказ')
+    flower = models.ForeignKey(Flowers, on_delete=models.CASCADE, verbose_name='цветок')
+    
+    quantity = models.PositiveIntegerField(
         verbose_name='количество',
-        max_digits=10,  
-        decimal_places=2,  
     )
+
     unit_price = models.DecimalField(
         verbose_name='цена за единицу',
         max_digits=10,
         decimal_places=2,
+        editable=False,  # нельзя редактировать
     )
 
     def get_total(self):
+        # Проверяем, что оба значения установлены
         if self.unit_price is None or self.quantity is None:
-            return 0  
+            return 0  # Если одно из значений None, возвращаем 0
         return self.unit_price * self.quantity
+
+    def save(self, *args, **kwargs):
+        # Если цена не была установлена, берём из модели цветка
+        if not self.unit_price:
+            self.unit_price = self.flower.price  # фиксируем цену при создании
+        super().save(*args, **kwargs)
+
+        # Пересчитываем общую сумму в заказе
+        self.order.total_amount = sum(
+            item.get_total() for item in self.order.ordertime_set.all()
+        )
+        self.order.save()
 
     def __str__(self):
         return f"{self.flower.title} - {self.quantity} шт."
-    
+
     class Meta:
         verbose_name = 'позиция'
         verbose_name_plural = 'позиции'
