@@ -230,18 +230,20 @@ def delivery_view(request):
 def order_success(request, order_id):
     try:
         order = get_object_or_404(Order, id=order_id)
+        print(f"Адрес заказа: {order.address}")  # Проверка, что адрес передается корректно
         
         if request.user != order.user:
             raise Http404("Это не ваш заказ")
         
         return render(request, 'blog/order_success.html', {
             'order': order,
-            'order_items': order.ordertime_set.all()  
+            'order_items': order.ordertime_set.all()
         })
-        
+    
     except Exception as e:
         print(f"Ошибка в order_success: {str(e)}")
         raise Http404("Произошла ошибка при отображении заказа")
+
     
 @login_required
 def process_delivery(request):
